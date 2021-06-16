@@ -1,0 +1,38 @@
+{
+  "name": "silex-desktop",
+  "version": "1.0.0",
+  "description": "Silex desktop application",
+  "main": "./src/index.js",
+  "author": "ArtFX Montpellier TDs",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^13.0.1",
+    "electron-builder": "^22.10.5",
+    "nodemon": "^2.0.7"
+  },
+  "scripts": {
+    "electron": "electron src",
+    "build:renderer": "cd ../silex-front; yarn build; cd ../silex-electron; mkdir -p ./build/html; cp -r ../silex-front/build/* ./build/html",
+    "start": "NODE_ENV=dev nodemon --watch ./src/*.js --watch ./src/**/*.js --exec 'yarn electron'",
+    "dist": "rm -rf dist/; yarn build:renderer; NODE_ENV=prod electron-builder"
+  },
+  "dependencies": {
+    "get-port": "^5.1.1",
+    "ws": "^7.4.6"
+  },
+  "build": {
+    "appId": "com.silexdesktop",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "productName": "silex-desktop",
+    "extraResources": [
+      "tmp/**/*",
+      "data/*.db",
+      "build/**/*"
+    ],
+    "files": [
+      "src/**/*"
+    ]
+  }
+}
