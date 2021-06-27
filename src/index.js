@@ -1,33 +1,33 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, Menu, Tray } = require("electron");
+const path = require("path");
 
 // Load project specific modules
 
-const mainWindow = require('./mainWindow.js');
-const websocket = require('./ws/ws.js');
-require('./ipc/ipc.js');
+const mainWindow = require("./mainWindow.js");
+const websocket = require("./ws/ws.js");
+require("./ipc/ipc.js");
 
 /**
  * Add the tray menu (app icon in task bar)
  */
 function createTrayMenu() {
-  tray = new Tray(path.join(__dirname, '256x256.png'));
+  tray = new Tray(path.join(__dirname, "256x256.png"));
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Open Silex',
-      type: 'normal',
-      click: () => mainWindow.openMainWindow()
+      label: "Open Silex",
+      type: "normal",
+      click: () => mainWindow.openMainWindow(),
     },
-    { type: 'separator' },
+    { type: "separator" },
     {
-      label: 'Quit Silex',
-      type: 'normal',
+      label: "Quit Silex",
+      type: "normal",
       click: () => app.quit(),
     },
   ]);
 
-  tray.setToolTip('Silex pipeline dektop app');
+  tray.setToolTip("Silex pipeline dektop app");
   tray.setContextMenu(contextMenu);
 }
 
@@ -40,10 +40,11 @@ app.whenReady().then(() => {
 
   websocket.startWebSocketServer();
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) mainWindow.createMainWindow();
+  app.on("activate", function () {
+    if (BrowserWindow.getAllWindows().length === 0)
+      mainWindow.createMainWindow();
   });
 
   // Prevent closing the app when the window is closed
-  app.on('window-all-closed', e => e.preventDefault() );
+  app.on("window-all-closed", (e) => e.preventDefault());
 });
