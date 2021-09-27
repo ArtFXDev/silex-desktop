@@ -4,8 +4,6 @@ const path = require("path");
 // Load project specific modules
 
 const mainWindow = require("./mainWindow.js");
-const websocket = require("./ws/ws.js");
-require("./ipc/ipc.js");
 
 /**
  * Add the tray menu (app icon in task bar)
@@ -37,8 +35,6 @@ function createTrayMenu() {
 app.whenReady().then(() => {
   createTrayMenu();
   mainWindow.createMainWindow();
-
-  websocket.startWebSocketServer();
 
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0)

@@ -20,9 +20,6 @@ function createMainWindow() {
     sandbox: true,
     backgroundColor: 'rgb(40, 39, 39)',
     show: false,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    },
     icon: path.join(__dirname, '256x256.png')
   });
 
@@ -37,9 +34,8 @@ function createMainWindow() {
   mainWindow.setMenuBarVisibility(false);
 
   // Check if running in dev mode
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV.includes('dev')) {
     mainWindow.loadURL('http://localhost:3000');
-
     // Open dev tools console
     mainWindow.webContents.openDevTools();
   } else {
