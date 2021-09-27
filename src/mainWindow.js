@@ -1,6 +1,6 @@
 const { BrowserWindow } = require("electron")
 const path = require("path")
-
+const silexSocketService = require("@artfxdev/silex-socket-service/src/index")
 // The main window kind of singleton
 let mainWindow
 module.exports.mainWindow = mainWindow
@@ -28,6 +28,7 @@ function createMainWindow () {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show()
     mainWindow.focus()
+    silexSocketService.run()
   })
 
   // Disable menu bar
