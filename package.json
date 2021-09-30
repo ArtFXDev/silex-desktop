@@ -8,27 +8,21 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "cross-env": "^7.0.3",
     "electron": "^13.0.1",
     "electron-builder": "^22.10.5",
     "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
     "husky": "^6.0.0",
     "nodemon": "^2.0.7"
   },
   "scripts": {
     "electron": "electron src",
     "build:renderer": "cd ../silex-front; yarn build; cd ../silex-electron; mkdir -p ./build/html; cp -r ../silex-front/build/* ./build/html",
-    "start": "set NODE_ENV=dev && nodemon --watch ./src/*.js --watch ./src/**/*.js --exec npm run electron",
+    "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
     "dist": "rm -rf dist/; yarn build:renderer; NODE_ENV=prod electron-builder"
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.0.5",
-    "get-port": "^5.1.1",
-    "ws": "^7.4.6",
-    "yarn": "^1.22.11"
+    "@artfxdev/silex-socket-service": "^1.0.5"
   },
   "husky": {
     "hooks": {
