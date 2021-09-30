@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@artfxdev/silex-socket-service@^1.0.4":
-  "integrity" "sha512-rXfo2eIFndOwtFfXO57XfIIu9mr9N/ok43edTKU93xyHGqQWtpFm5VbqOazbovRhamUEqRvY1jvzCnFEDiSDRw=="
-  "resolved" "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.0.4/6b23ff87573e61dd5213ffe7b12ba197b55c9e4368703f0987ae780dd165ac29"
-  "version" "1.0.4"
+"@artfxdev/silex-socket-service@^1.0.5":
+  "integrity" "sha512-guOJ8a7MGLyxj6T5pw2KKagJMuTZXadXP1GZurxw0oFkTVB5M0aUbcXrla7nIAa1OxWEbv4DqrWoWp5i3GaXkQ=="
+  "resolved" "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.0.5/fda767f34fc2fba10ad7d5742ee1bd04a926a98684ba7c6aca1be28c45397f9c"
+  "version" "1.0.5"
   dependencies:
+    "axios" "^0.21.4"
     "chai" "^4.3.4"
     "express" "^4.17.1"
     "mocha" "^9.1.1"
@@ -562,6 +563,13 @@
   "integrity" "sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg=="
   "resolved" "https://registry.npmjs.org/at-least-node/-/at-least-node-1.0.0.tgz"
   "version" "1.0.0"
+
+"axios@^0.21.4":
+  "integrity" "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz"
+  "version" "0.21.4"
+  dependencies:
+    "follow-redirects" "^1.14.0"
 
 "backo2@~1.0.2":
   "integrity" "sha1-MasayLEpNjRj41s+u2n038+6eUc="
@@ -1792,6 +1800,11 @@
   "integrity" "sha512-JaTY/wtrcSyvXJl4IMFHPKyFur1sE9AUqc0QnhOaJ0CxHtAoIV8pYDzeEfAaNEtGkOfq4gr3LBFmdXW5mOQFnA=="
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.2.tgz"
   "version" "3.2.2"
+
+"follow-redirects@^1.14.0":
+  "integrity" "sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.4.tgz"
+  "version" "1.14.4"
 
 "forwarded@0.2.0":
   "integrity" "sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow=="
