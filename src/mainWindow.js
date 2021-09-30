@@ -1,6 +1,7 @@
 const { BrowserWindow } = require("electron")
 const path = require("path")
 const silexSocketService = require("@artfxdev/silex-socket-service/src/index")
+
 // The main window kind of singleton
 let mainWindow
 module.exports.mainWindow = mainWindow
