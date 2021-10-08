@@ -22,7 +22,7 @@
     "dist": "rm -rf dist/; yarn build:renderer; NODE_ENV=prod electron-builder"
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.0.5"
+    "@artfxdev/silex-socket-service": "^1.1.0"
   },
   "husky": {
     "hooks": {
