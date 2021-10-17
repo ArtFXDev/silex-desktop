@@ -17,9 +17,7 @@
   },
   "scripts": {
     "electron": "electron src",
-    "build:renderer": "cd ../silex-front; yarn build; cd ../silex-electron; mkdir -p ./build/html; cp -r ../silex-front/build/* ./build/html",
-    "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
-    "dist": "rm -rf dist/; yarn build:renderer; NODE_ENV=prod electron-builder"
+    "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\""
   },
   "dependencies": {
     "@artfxdev/silex-socket-service": "^1.2.1"
