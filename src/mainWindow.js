@@ -1,63 +1,69 @@
-const { BrowserWindow } = require("electron")
-const path = require("path")
-const silexSocketService = require("@artfxdev/silex-socket-service/src/index")
+const { BrowserWindow } = require("electron");
+const path = require("path");
 
-// The main window kind of singleton
-let mainWindow
-module.exports.mainWindow = mainWindow
+let mainWindow;
 
 /**
  * Create the browser window.
  */
-function createMainWindow () {
+function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     minWidth: 940,
     minHeight: 480,
     webviewTag: true,
-    contextIsolation: true,
-    nodeIntegration: false,
-    sandbox: true,
-    backgroundColor: "rgb(40, 39, 39)",
+    backgroundColor: "#2c2b2b",
     show: false,
-    icon: path.join(__dirname, "256x256.png")
-  })
+    icon: path.join(__dirname, "assets", "images", "256x256.png"),
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
+      sandbox: true,
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
 
   // Show the window when ready to avoid visual blinking
   // See : https://www.electronjs.org/docs/api/browser-window#setting-backgroundcolor
   mainWindow.once("ready-to-show", () => {
-    mainWindow.show()
-    mainWindow.focus()
-    silexSocketService.run()
-  })
+    mainWindow.show();
+    mainWindow.focus();
+  });
 
   // Disable menu bar
-  mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(false);
 
-  // Check if running in dev mode
-  if (process.env.NODE_ENV.includes("dev")) {
-    mainWindow.loadURL("http://localhost:3000")
-    // Open dev tools console
-    mainWindow.webContents.openDevTools()
-  } else {
-    mainWindow.loadURL(`file://${process.resourcesPath}/build/html/index.html`)
-  }
+  // Serves the silex frontend directly
+  mainWindow.loadURL(process.env.SILEX_FRONT_URL);
+
+  mainWindow.webContents.on("did-fail-load", () => {
+    mainWindow.loadURL(
+      path.join("file:/", __dirname, "pages", "failed-loading.html") +
+        `?SILEX_FRONT_URL=${process.env.SILEX_FRONT_URL}`
+    );
+  });
+
+  module.exports.mainWindow = mainWindow;
 }
 
 /**
  * Open the main window, bring it to front otherwise recreate it
  */
-function openMainWindow () {
-  if (!mainWindow.isDestroyed()) {
+function openMainWindow() {
+  if (!module.exports.mainWindow.isDestroyed()) {
     // Bring it to the front
-    mainWindow.show()
+    module.exports.mainWindow.show();
+    console.log("Window is still there");
   } else {
-    createMainWindow()
+    createMainWindow();
+    console.log("creating window");
   }
 }
 
 module.exports = {
-  createMainWindow: createMainWindow,
-  openMainWindow: openMainWindow
-}
+  mainWindow,
+  createMainWindow,
+  openMainWindow,
+};

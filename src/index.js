@@ -1,47 +1,63 @@
-const { app, BrowserWindow, Menu, Tray } = require("electron")
-const path = require("path")
+const { app, BrowserWindow, Menu, Tray } = require("electron");
+const path = require("path");
+const mainWindow = require("./mainWindow.js");
 
-// Load project specific modules
+const socketServer = require("@artfxdev/silex-socket-service");
 
-const mainWindow = require("./mainWindow.js")
+let tray;
 
 /**
  * Add the tray menu (app icon in task bar)
  */
-function createTrayMenu () {
-  const tray = new Tray(path.join(__dirname, "256x256.png"))
+function createTrayMenu() {
+  tray = new Tray(path.join(__dirname, "assets", "images", "256x256.png"));
 
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "Open Silex",
       type: "normal",
-      click: () => mainWindow.openMainWindow()
+      click: () => mainWindow.openMainWindow(),
     },
     { type: "separator" },
     {
       label: "Quit Silex",
       type: "normal",
-      click: () => app.quit()
-    }
-  ])
+      click: () => {
+        app.quit();
+        app.exit();
+      },
+    },
+  ]);
 
-  tray.setToolTip("Silex pipeline dektop app")
-  tray.setContextMenu(contextMenu)
+  tray.setToolTip("Silex desktop app");
+  tray.setContextMenu(contextMenu);
 }
 
 /**
  * Called when the electron process is ready
  */
 app.whenReady().then(() => {
-  createTrayMenu()
-  mainWindow.createMainWindow()
+  // Create tray menu and window
+  createTrayMenu();
+  mainWindow.createMainWindow();
 
+  // Register IPC events
+  require("./ipc");
+
+  // Run the socket server
+  socketServer.run();
+
+  // Specific to macos
+  // See: https://www.electronjs.org/docs/latest/api/app#event-activate-macos
   app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) {
-      mainWindow.createMainWindow()
+      mainWindow.createMainWindow();
     }
-  })
+  });
 
-  // Prevent closing the app when the window is closed
-  app.on("window-all-closed", (e) => e.preventDefault())
-})
+  // Called on quit
+  app.on("quit", () => socketServer.persistStore());
+
+  // Prevent closing the app when the main window is closed
+  app.on("window-all-closed", (e) => e.preventDefault());
+});
