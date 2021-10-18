@@ -13,14 +13,15 @@
     "electron-builder": "^22.10.5",
     "eslint": "^7.32.0",
     "husky": "^6.0.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "prettier": "2.4.1"
   },
   "scripts": {
     "electron": "electron src",
     "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\""
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.2.1"
+    "@artfxdev/silex-socket-service": "^1.2.3"
   },
   "husky": {
     "hooks": {
