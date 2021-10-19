@@ -89,6 +89,20 @@
         event.preventDefault();
         window.electron.send("openSilexFront");
       });
+
+      async function testIfUpAgain() {
+        try {
+          const response = await fetch(SILEX_FRONT_URL);
+
+          if (response.ok) {
+            window.location.href = SILEX_FRONT_URL;
+          }
+        } catch (err) {
+          setTimeout(async () => await testIfUpAgain(), 3000);
+        }
+      }
+
+      testIfUpAgain();
     </script>
   </body>
 </html>
