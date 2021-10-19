@@ -1,4 +1,4 @@
-# Silex Desktop 
+# Silex Desktop
 
 ![](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E) ![](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=8ce6f8) ![](https://img.shields.io/badge/Electron-22252f?style=for-the-badge&logo=electron&logoColor=white) ![](https://img.shields.io/badge/ESLint-4b32c3?style=for-the-badge&logo=eslint&logoColor=white) ![](https://img.shields.io/badge/Prettier-c188c1?style=for-the-badge&logo=prettier&logoColor=white)
 
@@ -46,9 +46,9 @@ They are:
 
 Here are the main libraries and packages used:
 
-| Library                                                            | Version  |
-| ------------------------------------------------------------------ | -------- |
-| [Electron](https://www.electronjs.org/)                                    | `13.0.1`  |
+| Library                                 | Version  |
+| --------------------------------------- | -------- |
+| [Electron](https://www.electronjs.org/) | `13.5.2` |
 
 ## Contributing
 
@@ -59,4 +59,3 @@ Pull requests and issues are welcome. For major changes, please open an issue fi
 ## License
 
 [MIT](./LICENSE.md) [@ArtFX](https://artfx.school/)
-
