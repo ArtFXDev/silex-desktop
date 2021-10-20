@@ -22,8 +22,8 @@ jobs:
       - name: Create .npmrc
         run: |
           touch .npmrc
-          echo .npmrc @artfxdev:registry=https://npm.pkg.github.com/
-          echo .npmrc //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
+          echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc 
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc 
 
       - name: Init project
         run: npm i
