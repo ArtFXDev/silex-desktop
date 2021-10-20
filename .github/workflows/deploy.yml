@@ -31,12 +31,17 @@ jobs:
 
       - name: Build/release Electron app Linux
         run: npm run build:linux
-
+      
+      - name: Prepare Upload Artifact
+        run: |
+          mkdir ./dist-linux
+          mv ./dist/*.AppImage ./dist-linux
+      
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
         with:
           name: build-linux
-          path: ./dist
+          path: ./dist-linux
 
   build-windows:
     needs: build-linux
@@ -57,12 +62,18 @@ jobs:
 
       - name: Build/release Electron app Windows
         run: npm run build:windows
-
+      
+      - name: Prepare Upload Artifact
+        shell: powershell  
+        run: |
+          mkdir ./dist-windows
+          mv ./dist/*.exe ./dist-windows
+      
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
         with:
           name: build-windows
-          path: ./dist
+          path: ./dist-windows
 
   deploy:
     needs: build-windows
@@ -72,7 +83,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-linux
-          path: ./dist-linux/
+          path: ./dist-linux
 
       - name: Retrieve build-windows
         uses: actions/download-artifact@v2
@@ -83,8 +94,8 @@ jobs:
       - name: Create deployment directory
         run: |
           mkdir ./deployment
-          mv *.exe ./dist-windows/ ./deployment
-          mv *.AppImage ./dist-linux ./deployment
+          mv ./dist-windows/*.exe ./deployment
+          mv ./dist-linux/*.AppImage ./deployment
       
       - name: Checkout code # need to get version in package.json
         uses: actions/checkout@v2
