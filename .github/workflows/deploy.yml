@@ -27,7 +27,8 @@ jobs:
 
       - name: Create .npmrc
         uses: filipstefansson/set-npm-token-action@v1
-        token: ${{ secrets.NPM_TOKEN }}
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
 
       # Runs a single command using the runners shell
       - name: Init project
