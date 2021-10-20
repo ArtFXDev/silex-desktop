@@ -26,12 +26,11 @@ jobs:
       - uses: actions/setup-node@v2
 
       - name: Create .npmrc
+        shell: powershell  
         run: |
-          touch .npmrc
-          echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc
-          echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc
-          
-          cat .npmrc
+          New-Item .npmrc
+          Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
+          Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
       # Runs a single command using the runners shell
       - name: Init project
         run: npm i
