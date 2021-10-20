@@ -26,10 +26,11 @@ jobs:
       - uses: actions/setup-node@v2
 
       - name: Create .npmrc
+        env: ${{ secrets.github_token }}
         run: |
           touch .npmrc
           echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc
-          echo //npm.pkg.github.com/:${{ secrets.github_token }} >> .npmrc
+          echo //npm.pkg.github.com/:$GITHUB_TOKEN >> .npmrc
           
           cat .npmrc
       # Runs a single command using the runners shell
