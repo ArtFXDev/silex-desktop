@@ -26,10 +26,12 @@ jobs:
       - uses: actions/setup-node@v2
 
       - name: Create .npmrc
-        uses: filipstefansson/set-npm-token-action@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-
+        run: |
+          touch .npmrc
+          echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc
+          echo //npm.pkg.github.com/:${{ secrets.github_token }} >> .npmrc
+          
+          cat .npmrc
       # Runs a single command using the runners shell
       - name: Init project
         run: npm i
