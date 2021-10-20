@@ -45,7 +45,6 @@ jobs:
       - uses: actions/setup-node@v2
 
       - name: Create .npmrc
-        shell: powershell  
         run: |
           touch .npmrc
           echo .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
