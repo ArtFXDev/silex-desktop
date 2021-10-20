@@ -10,7 +10,13 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electron", {
   send: (channel, data) => {
     // whitelist channels
-    let validChannels = ["openSilexFront", "bringWindowToFront", "restartApp", "closeSilexUpdate", "updateDownloaded"];
+    let validChannels = [
+      "openSilexFront",
+      "bringWindowToFront",
+      "restartApp",
+      "closeSilexUpdate",
+      "updateDownloaded",
+    ];
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }

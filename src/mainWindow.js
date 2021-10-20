@@ -1,6 +1,6 @@
 const { BrowserWindow } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const updateWindow = require("./window/updateWindow")
+const updateWindow = require("./window/updateWindow");
 const path = require("path");
 let mainWindow;
 
@@ -21,7 +21,6 @@ function createMainWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      webSecurity: false,
       sandbox: true,
       preload: path.join(__dirname, "preload.js"),
     },
@@ -50,17 +49,17 @@ function createMainWindow() {
 
   autoUpdater.on("error", (err) => {
     console.log(err);
-  })
-  
+  });
+
   autoUpdater.on("update-available", () => {
     console.log("update available");
     openUpdateWindow();
-  })
+  });
 
   autoUpdater.on("update-downloaded", () => {
     console.log("update downloaded");
     updateWindow.onUpdateDownloaded();
-  })
+  });
 
   module.exports.mainWindow = mainWindow;
 }
@@ -80,7 +79,7 @@ function openMainWindow() {
 }
 
 function openUpdateWindow() {
-  updateWindow.createUpdateWindow()
+  updateWindow.createUpdateWindow();
 }
 
 module.exports = {

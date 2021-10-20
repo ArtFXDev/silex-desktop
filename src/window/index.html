@@ -85,7 +85,6 @@
         transition: all 0.2s ease;
         cursor: default;
       }
-
     </style>
   </head>
   <body>
@@ -95,12 +94,15 @@
           id="silex-logo"
           src="../assets/images/silex_logo.gif"
           alt="Silex logo gif"
-          width="90" height="90"
+          width="90"
+          height="90"
         />
         <span id="pre"></span>
         <div class="center">
-          <button class="silex-btn" disabled id="btn-install"> Restart and install </button>
-          <button class="silex-btn" id="btn-close"> Close </button>
+          <button class="silex-btn" disabled id="btn-install">
+            Restart and install
+          </button>
+          <button class="silex-btn" id="btn-close">Close</button>
         </div>
         <span id="pre"></span>
       </div>
@@ -113,18 +115,17 @@
       const btnInstallUpdate = document.getElementById("btn-install");
       const btnClose = document.getElementById("btn-close");
 
-      btnInstallUpdate.addEventListener("click", (event) => { 
+      btnInstallUpdate.addEventListener("click", (event) => {
         window.electron.send("restartApp");
       });
 
-      btnClose.addEventListener("click", (event) => { 
+      btnClose.addEventListener("click", (event) => {
         window.electron.send("closeSilexUpdate");
       });
 
       window.electron.receive("updateDownloaded", () => {
-        console.log("dddd")
-        btnInstallUpdate.removeAttribute("disabled")
-      })
+        btnInstallUpdate.removeAttribute("disabled");
+      });
     </script>
   </body>
 </html>
