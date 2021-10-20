@@ -31,8 +31,11 @@ jobs:
       - name: Build/release Electron app Linux
         run: npm run build:linux
 
-      - name: Move build to top
-        run: mv ./dist ../dist_linux
+      - name: Temporarily save Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-linux
+          path: ./dist
 
   build-windows:
     needs: build-linux
@@ -54,14 +57,29 @@ jobs:
       - name: Build/release Electron app Windows
         run: npm run build:windows
 
-      - name: Move Build to top directory
-        run: |
-          Rename-item ./dist ./dist-windows
-          Move-Item ./dist-windows ../dist-windows
+      - name: Temporarily save Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-windows
+          path: ./dist
+
   deploy:
     needs: build-windows
     runs-on: ubuntu-latest
     steps:
+      - name: Retrieve build-linux
+        uses: actions/download-artifact@v2
+        with:
+          name: build-linux
+          path: ./dist-linux/
+
+      - name: Retrieve build-windows
+        uses: actions/download-artifact@v2
+        with:
+          name: build-windows
+          path: ./dist-windows/
+ 
       - name: ls  
         run: |
           ls -l ../silex-desktop
+          ls -l ./
