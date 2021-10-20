@@ -36,7 +36,9 @@ jobs:
         run: |
           Rename-item ./dist ./dist-windows
           Move-Item ./dist-windows ../dist-windows
+
   build-linux:
+    needs: build-windows
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -45,9 +47,10 @@ jobs:
       - name: Create .npmrc
         shell: powershell  
         run: |
-          New-Item .npmrc
-          Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
-          Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
+          touch .npmrc
+          echo .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
+          echo .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
+
       - name: Init project
         run: npm i
 
@@ -56,7 +59,9 @@ jobs:
 
       - name: Move build to top
         run: mv ./dist ../dist_linux
+
   deploy:
+    needs: build-linux
     runs-on: ubuntu-latest
     steps:
       - name: ls  
