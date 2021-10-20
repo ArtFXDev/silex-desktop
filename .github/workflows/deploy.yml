@@ -93,9 +93,9 @@ jobs:
  
       - name: Create deployment directory
         run: |
-          mkdir ./deployment
-          mv ./dist-windows/*.exe ./deployment
-          mv ./dist-linux/*.AppImage ./deployment
+          mkdir ../deployment
+          mv ./dist-windows/*.exe ../deployment
+          mv ./dist-linux/*.AppImage ../deployment
       
       - name: Checkout code # need to get version in package.json
         uses: actions/checkout@v2
@@ -112,7 +112,7 @@ jobs:
           ls -l ../
           set -x
           assets=()
-          for asset in /home/runner/work/silex-desktop/deployment; do
+          for asset in ../deployment; do
             assets+=("-a" "$asset")
           done
           tag_name="${TAG_NAME##*/}"
