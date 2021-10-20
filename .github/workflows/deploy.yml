@@ -15,7 +15,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -36,8 +36,5 @@ jobs:
       - name: Init project
         run: npm i
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Build/release Electron app Windows
+        run: npm electron-builder build --win --publish never
