@@ -23,8 +23,10 @@
   "scripts": {
     "electron": "electron src",
     "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
-    "build": "electron-builder build --win --publish never",
-    "deploy": "electron-builder build --win --publish always",
+    "build:windows": "electron-builder build --win --publish never",
+    "build:linux": "electron-builder build --lin --publish never",
+    "deploy:windows": "electron-builder build --win --publish always",
+    "deploy:linux": "electron-builder build --lin --publish always",
     "format": "prettier --write ."
   },
   "dependencies": {

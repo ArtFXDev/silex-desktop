@@ -36,4 +36,4 @@ jobs:
         run: npm i
 
       - name: Build/release Electron app Windows
-        run: npm electron-builder build --win --publish never
+        run: npm run build:windows
