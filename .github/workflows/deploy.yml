@@ -7,6 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ga-deploy]
+
   pull_request:
     branches: [ga-deploy]
 
@@ -79,7 +80,25 @@ jobs:
           name: build-windows
           path: ./dist-windows/
  
-      - name: ls  
+      - name: Create deployment directory
         run: |
-          ls -l ../silex-desktop
-          ls -l ./
+          mkdir ./deployment
+          mv *.exe ./build-windows/ ./deployment
+          mv *.AppImage ./build-linux ./deployment
+      
+      - name: Checkout code # need to get version in package.json
+        uses: actions/checkout@v2
+      
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name : create release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+              tag_name: ${{ steps.package-version.outputs.current-version}}
+              release_name: Silex Desktop v${{ steps.package-version.outputs.current-version}}
+              draft: false
+              prerelease: false
