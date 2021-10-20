@@ -24,6 +24,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+
+      - name: Create .npmrc
+        run: |
+          touch .npmrc
+          echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc
+          echo //npm.pkg.github.com/:${{ secrets.github_token }} >> .npmrc
+          
+          cat .npmrc
       # Runs a single command using the runners shell
       - name: Init project
         run: npm i
