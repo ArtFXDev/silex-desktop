@@ -108,9 +108,11 @@ jobs:
         env:
           TAG_NAME: ${{ steps.package-version.outputs.current-version}}
         run: |
+          ls -l ./
+          ls -l ../
           set -x
           assets=()
-          for asset in /home/runner/work/silex-desktop/silex-desktop/deployment; do
+          for asset in /home/runner/work/silex-desktop/deployment; do
             assets+=("-a" "$asset")
           done
           tag_name="${TAG_NAME##*/}"
