@@ -83,8 +83,8 @@ jobs:
       - name: Create deployment directory
         run: |
           mkdir ./deployment
-          mv *.exe ./build-windows/ ./deployment
-          mv *.AppImage ./build-linux ./deployment
+          mv *.exe ./dist-windows/ ./deployment
+          mv *.AppImage ./dist-linux ./deployment
       
       - name: Checkout code # need to get version in package.json
         uses: actions/checkout@v2
