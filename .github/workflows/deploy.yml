@@ -13,15 +13,10 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-windows:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
 
@@ -31,9 +26,40 @@ jobs:
           New-Item .npmrc
           Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
           Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
-      # Runs a single command using the runners shell
       - name: Init project
         run: npm i
 
       - name: Build/release Electron app Windows
         run: npm run build:windows
+
+      - name: Move Build to top directory
+        run: |
+          Rename-item ./dist ./dist-windows
+          Move-Item ./dist-windows ../dist-windows
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+
+      - name: Create .npmrc
+        shell: powershell  
+        run: |
+          New-Item .npmrc
+          Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
+          Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
+      - name: Init project
+        run: npm i
+
+      - name: Build/release Electron app Windows
+        run: npm run build:windows
+
+      - name: Move build to top
+        run: mv ./dist ../dist_linux
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ls  
+        run: |
+          ls -l ./
+          ls -l ../
