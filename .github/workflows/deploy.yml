@@ -28,8 +28,8 @@ jobs:
       - name: Init project
         run: npm i
 
-      - name: Build/release Electron app Windows
-        run: npm run build:windows
+      - name: Build/release Electron app Linux
+        run: npm run build:linux
 
       - name: Move build to top
         run: mv ./dist ../dist_linux
