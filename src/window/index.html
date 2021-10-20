@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Updater</title>
+
+    <style>
+      body,
+      html {
+        background-color: #2c2b2b;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #root {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #silex-logo {
+        height: auto;
+      }
+
+      #pre {
+        font-family: monospace;
+        color: #969595;
+        font-size: large;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      #silex-front-link {
+        font-family: monospace;
+        color: #adadad;
+        font-size: larger;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+      }
+
+      #silex-front-link:hover {
+        cursor: pointer;
+        color: #cecece;
+        background-color: #3b3b3b;
+        color: #64c96f;
+      }
+
+      .silex-btn:not([disabled]) {
+        background-color: #3b3b3b;
+        border: none;
+        text-align: center;
+        border-radius: 5px;
+        padding: 10px 10px;
+        box-shadow: 0 6px 6px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+        color: white;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .silex-btn:hover:not([disabled]) {
+        box-shadow: 0 6px 6px 0 rgb(0 0 0 / 24%), 0 10px 30px 0 rgb(0 0 0 / 50%);
+        filter: brightness(1.2);
+      }
+      .silex-btn:disabled {
+        background-color: #3b3b3b;
+        border: none;
+        text-align: center;
+        border-radius: 5px;
+        padding: 10px 10px;
+        color: rgb(155, 155, 155);
+        transition: all 0.2s ease;
+        cursor: default;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="logo-container">
+        <img
+          id="silex-logo"
+          src="../assets/images/silex_logo.gif"
+          alt="Silex logo gif"
+          width="90" height="90"
+        />
+        <span id="pre"></span>
+        <div class="center">
+          <button class="silex-btn" disabled id="btn-install"> Restart and install </button>
+          <button class="silex-btn" id="btn-close"> Close </button>
+        </div>
+        <span id="pre"></span>
+      </div>
+    </div>
+
+    <script>
+      const pre = document.getElementById("pre");
+      pre.innerText = `New update available`;
+
+      const btnInstallUpdate = document.getElementById("btn-install");
+      const btnClose = document.getElementById("btn-close");
+
+      btnInstallUpdate.addEventListener("click", (event) => { 
+        window.electron.send("restartApp");
+      });
+
+      btnClose.addEventListener("click", (event) => { 
+        window.electron.send("closeSilexUpdate");
+      });
+
+      window.electron.receive("updateDownloaded", () => {
+        console.log("dddd")
+        btnInstallUpdate.removeAttribute("disabled")
+      })
+    </script>
+  </body>
+</html>

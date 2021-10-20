@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.0",
+  "version": "1.0.12",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX Montpellier TDs",
@@ -16,12 +16,19 @@
     "nodemon": "^2.0.7",
     "prettier": "2.4.1"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/ArtFXDev/silex-desktop.git"
+  },
   "scripts": {
     "electron": "electron src",
-    "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\""
+    "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.2.3"
+    "@artfxdev/silex-socket-service": "^1.2.3",
+    "electron-updater": "^4.3.9"
   },
   "husky": {
     "hooks": {
@@ -41,6 +48,10 @@
     ],
     "files": [
       "src/**/*"
+    ],
+    "extraFiles": [
+      ".env",
+      ".env.example"
     ]
   }
 }

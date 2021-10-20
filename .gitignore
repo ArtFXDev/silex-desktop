@@ -22,7 +22,7 @@ SHASUMS256.txt
 **/package-lock.json
 compile_commands.json
 .envrc
-
+*.exe
 build
 
 # npm package
@@ -55,3 +55,4 @@ ts-gen
 patches/mtime-cache.json
 
 spec/fixtures/logo.png
+electron-builder.yml
