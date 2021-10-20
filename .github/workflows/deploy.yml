@@ -64,5 +64,4 @@ jobs:
     steps:
       - name: ls  
         run: |
-          ls -l ./
-          ls -l ../
+          ls -l ../silex-desktop
