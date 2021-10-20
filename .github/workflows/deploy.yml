@@ -18,24 +18,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+        os: [ubuntu-latest, windows-latest]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v
       - uses: actions/setup-node@v2
       # Runs a single command using the runners shell
       - name: Init project
         run: npm i
 
-      - name: Create .env file
-        run: |
-          touch .env
-          echo SILEX_FRONT_URL="http://localhost:3000" >> .env
-          echo ZOU_API_URL="http://localhost" >> .env
-          echo PORT="5118" >> .env
-
-      - name: Run test Mocha
-        run: |
-          npm run mocha
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
