@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX Montpellier TDs",
@@ -24,7 +24,7 @@
     "electron": "electron src",
     "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
     "build": "electron-builder build --win --publish never",
-    "deploy": "electron-builder build --win --publish always"
+    "deploy": "electron-builder build --win --linux --publish always"
   },
   "dependencies": {
     "@artfxdev/silex-socket-service": "^1.2.3",

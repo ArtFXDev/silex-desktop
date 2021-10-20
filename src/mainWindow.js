@@ -55,13 +55,11 @@ function createMainWindow() {
   autoUpdater.on("update-available", () => {
     console.log("update available");
     openUpdateWindow();
-    openUpdateWindow();
   })
-  updateWindow.onUpdateDownloaded();
 
   autoUpdater.on("update-downloaded", () => {
     console.log("update downloaded");
-    openUpdateWindow();
+    updateWindow.onUpdateDownloaded();
   })
 
   module.exports.mainWindow = mainWindow;
