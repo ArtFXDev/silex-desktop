@@ -110,7 +110,7 @@ jobs:
           ls -l ../
           set -x
           assets=()
-          for asset in ../deployment; do
+          for asset in ../deployment/*; do
             assets+=("-a" "$asset")
           done
           tag_name="${TAG_NAME##*/}"
