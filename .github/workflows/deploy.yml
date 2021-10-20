@@ -59,7 +59,7 @@ jobs:
           Rename-item ./dist ./dist-windows
           Move-Item ./dist-windows ../dist-windows
   deploy:
-    needs: build-linux
+    needs: build-windows
     runs-on: ubuntu-latest
     steps:
       - name: ls  
