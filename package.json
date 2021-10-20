@@ -24,9 +24,9 @@
     "electron": "electron src",
     "start": "cross-env NODE_ENV=dev nodemon --watch ./src/**/*.js --exec \"npm run electron\"",
     "build:windows": "electron-builder build --win --publish never",
-    "build:linux": "electron-builder build --lin --publish never",
+    "build:linux": "electron-builder build --linux --publish never",
     "deploy:windows": "electron-builder build --win --publish always",
-    "deploy:linux": "electron-builder build --lin --publish always",
+    "deploy:linux": "electron-builder build --linux --publish always",
     "format": "prettier --write ."
   },
   "dependencies": {
