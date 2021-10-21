@@ -68,7 +68,7 @@ jobs:
           mkdir ./dist-windows
           mv ./dist/*.exe ./dist-windows
           mv ./dist/latest.yml ./dist-windows
-      
+          mv ./dist/*.blockmap ./dist-windows
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
         with:
@@ -96,6 +96,7 @@ jobs:
           mkdir ../deployment
           mv ./dist-windows/*.exe ../deployment
           mv ./dist-windows/*.yml ../deployment
+          mv ./dist-windows/*.blockmap ../deployment
           mv ./dist-linux/*.AppImage ../deployment
           mv ./dist-linux/*.snap ../deployment
           mv ./dist-linux/*.yml ../deployment
