@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX Montpellier TDs",
