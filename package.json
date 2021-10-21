@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX Montpellier TDs",
@@ -52,6 +52,7 @@
     "files": [
       "src/**/*"
     ],
+    "artifactName": "${productName}-Setup-${version}.${ext}",
     "extraFiles": [
       ".env",
       ".env.example"
