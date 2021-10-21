@@ -1,6 +1,7 @@
 const { BrowserWindow } = require("electron");
+const { autoUpdater } = require("electron-updater");
+const updateWindow = require("./window/updateWindow");
 const path = require("path");
-
 let mainWindow;
 
 /**
@@ -30,6 +31,7 @@ function createMainWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     mainWindow.focus();
+    autoUpdater.checkForUpdatesAndNotify();
   });
 
   // Disable menu bar
@@ -43,6 +45,20 @@ function createMainWindow() {
       path.join("file:/", __dirname, "pages", "failed-loading.html") +
         `?SILEX_FRONT_URL=${process.env.SILEX_FRONT_URL}`
     );
+  });
+
+  autoUpdater.on("error", (err) => {
+    console.log(err);
+  });
+
+  autoUpdater.on("update-available", () => {
+    console.log("update available");
+    openUpdateWindow();
+  });
+
+  autoUpdater.on("update-downloaded", () => {
+    console.log("update downloaded");
+    updateWindow.onUpdateDownloaded();
   });
 
   module.exports.mainWindow = mainWindow;
@@ -60,6 +76,10 @@ function openMainWindow() {
     createMainWindow();
     console.log("creating window");
   }
+}
+
+function openUpdateWindow() {
+  updateWindow.createUpdateWindow();
 }
 
 module.exports = {

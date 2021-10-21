@@ -1,0 +1,115 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [master]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+
+      - name: Create .npmrc
+        run: |
+          touch .npmrc
+          echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc 
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc 
+
+      - name: Init project
+        run: npm i
+
+      - name: Build/release Electron app Linux
+        run: npm run build:linux
+      
+      - name: Prepare Upload Artifact
+        run: |
+          mkdir ./dist-linux
+          mv ./dist/*.AppImage ./dist-linux
+      
+      - name: Temporarily save Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-linux
+          path: ./dist-linux
+
+  build-windows:
+    needs: build-linux
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+
+      - name: Create .npmrc
+        shell: powershell  
+        run: |
+          New-Item .npmrc
+          Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
+          Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
+      - name: Init project
+        run: npm i
+
+      - name: Build/release Electron app Windows
+        run: npm run build:windows
+      
+      - name: Prepare Upload Artifact
+        shell: powershell  
+        run: |
+          mkdir ./dist-windows
+          mv ./dist/*.exe ./dist-windows
+      
+      - name: Temporarily save Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-windows
+          path: ./dist-windows
+
+  deploy:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve build-linux
+        uses: actions/download-artifact@v2
+        with:
+          name: build-linux
+          path: ./dist-linux
+
+      - name: Retrieve build-windows
+        uses: actions/download-artifact@v2
+        with:
+          name: build-windows
+          path: ./dist-windows/
+ 
+      - name: Create deployment directory
+        run: |
+          mkdir ../deployment
+          mv ./dist-windows/*.exe ../deployment
+          mv ./dist-linux/*.AppImage ../deployment
+      
+      - name: Checkout code # need to get version in package.json
+        uses: actions/checkout@v2
+      
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: create release
+        run: |
+          set -x
+          assets=()
+          for asset in ../deployment/*; do
+            assets+=("-a" "$asset")
+          done
+          tag_name="${TAG_NAME##*/}"
+          hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.package-version.outputs.current-version}}

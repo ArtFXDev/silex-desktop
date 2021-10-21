@@ -10,13 +10,19 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electron", {
   send: (channel, data) => {
     // whitelist channels
-    let validChannels = ["openSilexFront", "bringWindowToFront"];
+    let validChannels = [
+      "openSilexFront",
+      "bringWindowToFront",
+      "restartApp",
+      "closeSilexUpdate",
+      "updateDownloaded",
+    ];
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }
   },
   receive: (channel, func) => {
-    let validChannels = [];
+    let validChannels = ["updateDownloaded"];
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (_event, ...args) => func(...args));
