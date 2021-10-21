@@ -6,10 +6,10 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ga-deploy]
+    branches: [master]
 
   pull_request:
-    branches: [ga-deploy]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -106,8 +106,6 @@ jobs:
 
       - name: create release
         run: |
-          ls -l ./
-          ls -l ../
           set -x
           assets=()
           for asset in ../deployment/*; do
