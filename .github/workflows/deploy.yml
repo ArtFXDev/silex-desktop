@@ -33,7 +33,9 @@ jobs:
         run: |
           mkdir ./dist-linux
           mv ./dist/*.AppImage ./dist-linux
-      
+          mv ./dist/*.snap ./dist-linux
+          mv ./dist/latest-linux.yml ./dist-linux
+          
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
         with:
@@ -65,6 +67,7 @@ jobs:
         run: |
           mkdir ./dist-windows
           mv ./dist/*.exe ./dist-windows
+          mv ./dist/latest.yml ./dist-windows
       
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
@@ -92,8 +95,11 @@ jobs:
         run: |
           mkdir ../deployment
           mv ./dist-windows/*.exe ../deployment
+          mv ./dist-windows/*.yml ../deployment
           mv ./dist-linux/*.AppImage ../deployment
-      
+          mv ./dist-linux/*.snap ../deployment
+          mv ./dist-linux/*.yml ../deployment
+          
       - name: Checkout code # need to get version in package.json
         uses: actions/checkout@v2
       
