@@ -46,7 +46,7 @@ app.whenReady().then(() => {
 
   // Run the socket server
   socketServer.run();
-
+  
   // Specific to macos
   // See: https://www.electronjs.org/docs/latest/api/app#event-activate-macos
   app.on("activate", function () {
