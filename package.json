@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX Montpellier TDs",
@@ -56,6 +56,11 @@
     "extraFiles": [
       ".env",
       ".env.example"
-    ]
+    ],
+    "nsis": {
+      "allowToChangeInstallationDirectory": false,
+      "oneClick": true,
+      "shortcutName": "Silex Desktop"
+    }
   }
 }
