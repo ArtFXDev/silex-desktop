@@ -3,6 +3,7 @@ const path = require("path");
 const mainWindow = require("./mainWindow.js");
 
 const socketServer = require("@artfxdev/silex-socket-service");
+const gotTheLock = app.requestSingleInstanceLock()
 
 let tray;
 
@@ -32,6 +33,25 @@ function createTrayMenu() {
   tray.setToolTip("Silex desktop app");
   tray.setContextMenu(contextMenu);
 }
+
+if (!gotTheLock) {
+  app.quit()
+  return;
+}
+
+app.on('second-instance', (event, commandLine, workingDirectory) => {
+  // Print out data received from the second instance.
+  console.log("ALREADY OPEN")
+
+  console.log(mainWindow)
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow && mainWindow.mainWindow) {
+    console.log(mainWindow.mainWindow.isMinimized())
+    if (mainWindow.mainWindow.isMinimized()) mainWindow.mainWindow.restore()
+    mainWindow.mainWindow.show()
+    mainWindow.mainWindow.focus()
+  }
+})
 
 /**
  * Called when the electron process is ready
