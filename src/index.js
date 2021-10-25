@@ -3,7 +3,7 @@ const path = require("path");
 const mainWindow = require("./mainWindow.js");
 
 const socketServer = require("@artfxdev/silex-socket-service");
-const gotTheLock = app.requestSingleInstanceLock()
+const gotTheLock = app.requestSingleInstanceLock();
 
 let tray;
 
@@ -35,23 +35,19 @@ function createTrayMenu() {
 }
 
 if (!gotTheLock) {
-  app.quit()
+  app.quit();
   return;
 }
 
-app.on('second-instance', (event, commandLine, workingDirectory) => {
-  // Print out data received from the second instance.
-  console.log("ALREADY OPEN")
-
-  console.log(mainWindow)
+app.on("second-instance", () => {
   // Someone tried to run a second instance, we should focus our window.
   if (mainWindow && mainWindow.mainWindow) {
-    console.log(mainWindow.mainWindow.isMinimized())
-    if (mainWindow.mainWindow.isMinimized()) mainWindow.mainWindow.restore()
-    mainWindow.mainWindow.show()
-    mainWindow.mainWindow.focus()
+    console.log(mainWindow.mainWindow.isMinimized());
+    if (mainWindow.mainWindow.isMinimized()) mainWindow.mainWindow.restore();
+    mainWindow.mainWindow.show();
+    mainWindow.mainWindow.focus();
   }
-})
+});
 
 /**
  * Called when the electron process is ready
@@ -66,7 +62,7 @@ app.whenReady().then(() => {
 
   // Run the socket server
   socketServer.run();
-  
+
   // Specific to macos
   // See: https://www.electronjs.org/docs/latest/api/app#event-activate-macos
   app.on("activate", function () {

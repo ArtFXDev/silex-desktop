@@ -21,21 +21,21 @@ jobs:
         run: |
           touch .npmrc
           echo @artfxdev:registry=https://npm.pkg.github.com/ >> .npmrc 
-          echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc 
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc
 
       - name: Init project
         run: npm i
 
       - name: Build/release Electron app Linux
         run: npm run build:linux
-      
+
       - name: Prepare Upload Artifact
         run: |
           mkdir ./dist-linux
           mv ./dist/*.AppImage ./dist-linux
           mv ./dist/*.snap ./dist-linux
           mv ./dist/latest-linux.yml ./dist-linux
-          
+
       - name: Temporarily save Build
         uses: actions/upload-artifact@v2
         with:
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/setup-node@v2
 
       - name: Create .npmrc
-        shell: powershell  
+        shell: powershell
         run: |
           New-Item .npmrc
           Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
@@ -61,9 +61,9 @@ jobs:
 
       - name: Build/release Electron app Windows
         run: npm run build:windows
-      
+
       - name: Prepare Upload Artifact
-        shell: powershell  
+        shell: powershell
         run: |
           mkdir ./dist-windows
           mv ./dist/*.exe ./dist-windows
@@ -90,7 +90,7 @@ jobs:
         with:
           name: build-windows
           path: ./dist-windows/
- 
+
       - name: Create deployment directory
         run: |
           mkdir ../deployment
@@ -100,10 +100,10 @@ jobs:
           mv ./dist-linux/*.AppImage ../deployment
           mv ./dist-linux/*.snap ../deployment
           mv ./dist-linux/*.yml ../deployment
-          
+
       - name: Checkout code # need to get version in package.json
         uses: actions/checkout@v2
-      
+
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
