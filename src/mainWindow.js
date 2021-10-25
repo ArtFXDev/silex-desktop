@@ -34,9 +34,9 @@ function createMainWindow() {
     autoUpdater.checkForUpdatesAndNotify();
   });
 
-  mainWindow.on('close', function (event) {
+  mainWindow.on("close", function (event) {
     event.preventDefault();
-    mainWindow.hide();  
+    mainWindow.hide();
     return false;
   });
 
