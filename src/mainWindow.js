@@ -2,7 +2,7 @@ const { BrowserWindow } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const updateWindow = require("./window/updateWindow");
 const path = require("path");
-let mainWindow;
+let mainWindow = null;
 
 /**
  * Create the browser window.
@@ -32,6 +32,12 @@ function createMainWindow() {
     mainWindow.show();
     mainWindow.focus();
     autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  mainWindow.on('close', function (event) {
+    event.preventDefault();
+    mainWindow.hide();  
+    return false;
   });
 
   // Disable menu bar

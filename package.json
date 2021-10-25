@@ -1,9 +1,9 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Silex desktop application",
   "main": "./src/index.js",
-  "author": "TD Gang",
+  "author": "ArtFX TDs Gang",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
