@@ -1,4 +1,4 @@
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const updateWindow = require("./window/updateWindow");
 const path = require("path");
@@ -32,6 +32,7 @@ function createMainWindow() {
     mainWindow.show();
     mainWindow.focus();
     autoUpdater.checkForUpdatesAndNotify();
+    setTitleVersion();
   });
 
   mainWindow.on("close", function (event) {
@@ -86,6 +87,17 @@ function openMainWindow() {
 
 function openUpdateWindow() {
   updateWindow.createUpdateWindow();
+}
+
+function setTitleVersion() {
+  let { currentVersion } = "";
+
+  if (process.env.NODE_ENV === "development") {
+    currentVersion = require("../package.json").version;
+  } else {
+    currentVersion = app.getVersion();
+  }
+  mainWindow.setTitle(`Silex v${currentVersion}`);
 }
 
 module.exports = {
