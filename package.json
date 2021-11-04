@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX TDs Gang",
@@ -30,7 +30,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.3.4",
+    "@artfxdev/silex-socket-service": "^1.3.7",
+    "auto-launch": "^5.0.5",
     "electron-updater": "^4.3.9"
   },
   "husky": {
@@ -53,10 +54,6 @@
       "src/**/*"
     ],
     "artifactName": "${productName}-Setup-${version}.${ext}",
-    "extraFiles": [
-      ".env",
-      ".env.example"
-    ],
     "nsis": {
       "allowToChangeInstallationDirectory": false,
       "oneClick": true,

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, Tray } = require("electron");
 const path = require("path");
 const mainWindow = require("./mainWindow.js");
+const AutoLaunch = require("auto-launch");
 
 const socketServer = require("@artfxdev/silex-socket-service");
 const gotTheLock = app.requestSingleInstanceLock();
@@ -76,4 +77,13 @@ app.whenReady().then(() => {
 
   // Prevent closing the app when the main window is closed
   app.on("window-all-closed", (e) => e.preventDefault());
+
+  // start on startup
+  const silexLauncher = new AutoLaunch({
+    name: "SilexDesktop",
+    path: app.getPath('exe'),
+  });
+  silexLauncher.isEnabled().then((isEnabled) => {
+    if (!isEnabled) silexLauncher.enable();
+  });
 });
