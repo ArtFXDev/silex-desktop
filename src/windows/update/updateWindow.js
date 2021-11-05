@@ -1,5 +1,6 @@
 const { BrowserWindow } = require("electron");
 const path = require("path");
+
 let win;
 
 function createUpdateWindow() {
@@ -16,6 +17,7 @@ function createUpdateWindow() {
       preload: path.join(__dirname, "../preload.js"),
     },
   });
+
   win.loadURL(`file://${__dirname}/index.html`);
 
   win.once("ready-to-show", () => {
