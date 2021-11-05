@@ -2,8 +2,9 @@ const { app, BrowserWindow, Menu, Tray } = require("electron");
 const path = require("path");
 const mainWindow = require("./mainWindow.js");
 const AutoLaunch = require("auto-launch");
-
 const socketServer = require("@artfxdev/silex-socket-service");
+
+process.env.SILEX_FRONT_URL = "http://localhost:3000";
 const gotTheLock = app.requestSingleInstanceLock();
 
 let tray;
@@ -19,6 +20,10 @@ function createTrayMenu() {
       label: "Open Silex",
       type: "normal",
       click: () => mainWindow.openMainWindow(),
+    },
+    { type: "separator" },
+    {
+      label: `Toggle Nimby`,
     },
     { type: "separator" },
     {
@@ -81,7 +86,7 @@ app.whenReady().then(() => {
   // start on startup
   const silexLauncher = new AutoLaunch({
     name: "SilexDesktop",
-    path: app.getPath('exe'),
+    path: app.getPath("exe"),
   });
   silexLauncher.isEnabled().then((isEnabled) => {
     if (!isEnabled) silexLauncher.enable();

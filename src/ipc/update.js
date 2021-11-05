@@ -1,6 +1,6 @@
 const { ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const updateWindow = require("../window/updateWindow");
+const updateWindow = require("../windows/update/updateWindow");
 
 ipcMain.on("restartApp", () => {
   autoUpdater.quitAndInstall();

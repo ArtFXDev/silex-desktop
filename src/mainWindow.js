@@ -1,7 +1,9 @@
 const { BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const updateWindow = require("./window/updateWindow");
+const updateWindow = require("./windows/update/updateWindow");
 const path = require("path");
+
+// The main window is singleton-like
 let mainWindow = null;
 
 /**
@@ -85,6 +87,9 @@ function openMainWindow() {
   }
 }
 
+/**
+ * Called when a new update of the application is found on GitHub
+ */
 function openUpdateWindow() {
   updateWindow.createUpdateWindow();
 }
