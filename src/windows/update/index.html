@@ -75,6 +75,7 @@
         box-shadow: 0 6px 6px 0 rgb(0 0 0 / 24%), 0 10px 30px 0 rgb(0 0 0 / 50%);
         filter: brightness(1.2);
       }
+
       .silex-btn:disabled {
         background-color: #3b3b3b;
         border: none;
@@ -104,14 +105,11 @@
           </button>
           <button class="silex-btn" id="btn-close">Close</button>
         </div>
-        <span id="pre"></span>
+        <span id="pre">New update available</span>
       </div>
     </div>
 
     <script>
-      const pre = document.getElementById("pre");
-      pre.innerText = `New update available`;
-
       const btnInstallUpdate = document.getElementById("btn-install");
       const btnClose = document.getElementById("btn-close");
 

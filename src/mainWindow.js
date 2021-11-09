@@ -1,7 +1,10 @@
 const { BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const updateWindow = require("./window/updateWindow");
+const updateWindow = require("./windows/update");
 const path = require("path");
+const logger = require("./utils/logger");
+
+// The main window is singleton-like
 let mainWindow = null;
 
 /**
@@ -55,16 +58,16 @@ function createMainWindow() {
   });
 
   autoUpdater.on("error", (err) => {
-    console.log(err);
+    logger.error(err);
   });
 
   autoUpdater.on("update-available", () => {
-    console.log("update available");
+    logger.info("update available");
     openUpdateWindow();
   });
 
   autoUpdater.on("update-downloaded", () => {
-    console.log("update downloaded");
+    logger.info("update downloaded");
     updateWindow.onUpdateDownloaded();
   });
 
@@ -78,13 +81,14 @@ function openMainWindow() {
   if (!module.exports.mainWindow.isDestroyed()) {
     // Bring it to the front
     module.exports.mainWindow.show();
-    console.log("Window is still there");
   } else {
     createMainWindow();
-    console.log("creating window");
   }
 }
 
+/**
+ * Called when a new update of the application is found on GitHub
+ */
 function openUpdateWindow() {
   updateWindow.createUpdateWindow();
 }
@@ -97,6 +101,7 @@ function setTitleVersion() {
   } else {
     currentVersion = app.getVersion();
   }
+
   mainWindow.setTitle(`Silex v${currentVersion}`);
 }
 
