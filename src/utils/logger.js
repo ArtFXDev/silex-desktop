@@ -12,7 +12,7 @@ const logger = pino(
   },
   process.env.NODE_ENV === "development"
     ? undefined
-    : pino.destination(path.join(process.env.SILEXDIR, ".silex_nimby_log"))
+    : pino.destination(path.join(process.env.SILEXDIR, ".silex_desktop_log"))
 );
 
 module.exports = logger;

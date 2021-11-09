@@ -8,6 +8,9 @@ ipcMain.on("bringWindowToFront", () => {
 
   app.focus();
 
+  mainWindow.setAlwaysOnTop(true);
   mainWindow.show();
+  mainWindow.setAlwaysOnTop(false);
+
   mainWindow.focus();
 });
