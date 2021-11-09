@@ -5,9 +5,6 @@ const AutoLaunch = require("auto-launch");
 const socketServer = require("@artfxdev/silex-socket-service");
 const { toggleNimby } = require("./utils/blade");
 
-// TODO: remove
-process.env.SILEX_FRONT_URL = "http://localhost:3000";
-
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
