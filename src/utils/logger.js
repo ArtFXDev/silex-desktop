@@ -2,14 +2,7 @@ const pino = require("pino");
 const path = require("path");
 
 const logger = pino(
-  {
-    transport: {
-      target: "pino-pretty",
-      options: {
-        colorize: true,
-      },
-    },
-  },
+  { prettyPrint: true },
   process.env.NODE_ENV === "development"
     ? undefined
     : pino.destination(

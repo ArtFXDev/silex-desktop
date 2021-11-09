@@ -7,10 +7,10 @@
   resolved "https://registry.npmjs.org/7zip-bin/-/7zip-bin-5.1.1.tgz"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@^1.3.7":
-  version "1.3.7"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.3.7/5fff4527b3b5b1688c164258b07cac2d0b4f6b7420879fbcc64af55add9ec0db"
-  integrity sha512-mWjQp3CfZFx/thu49QiaBCsozPKfn4B6ZM671LQpQLc/rjQWRRZezvVuQZciEEY3Uuh2LpJGNfw45xUnI2RtZA==
+"@artfxdev/silex-socket-service@^1.3.8":
+  version "1.3.8"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.3.8/08adca2be6b5492316bba5a396c56a2834fcdbb2c7778a8323862e095317da00#c0572317bebf709c573ba8f500cc5ab54c225148"
+  integrity sha512-K2NdKnvc3Of2GV8iS0YApCJAWctzhOZ/h/Rtanz+KikUThs1EWZodCPTEsQtzQ7/iGVx1+7iox8YyF136qLKsA==
   dependencies:
     axios "^0.21.4"
     cors "^2.8.5"
