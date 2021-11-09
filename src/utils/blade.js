@@ -1,4 +1,5 @@
 const axios = require("axios").default;
+const logger = require("../utils/logger");
 
 const BLADE_URL = "http://localhost:9005";
 
@@ -13,7 +14,7 @@ function getBladeStatus() {
  * Sets the nimby status to ON or OFF. Returns a promise
  */
 function setNimbyValue(newStatus) {
-  console.log(`[NIMBY] Setting Nimby value to ${newStatus}`);
+  logger.info(`[NIMBY] Setting Nimby value to ${newStatus}`);
   return axios.get(`${BLADE_URL}/blade/ctrl?nimby=${newStatus ? 1 : 0}`);
 }
 
