@@ -2,6 +2,7 @@ const { BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const updateWindow = require("./windows/update");
 const path = require("path");
+const logger = require("./utils/logger");
 
 // The main window is singleton-like
 let mainWindow = null;
@@ -57,16 +58,16 @@ function createMainWindow() {
   });
 
   autoUpdater.on("error", (err) => {
-    console.log(err);
+    logger.error(err);
   });
 
   autoUpdater.on("update-available", () => {
-    console.log("update available");
+    logger.info("update available");
     openUpdateWindow();
   });
 
   autoUpdater.on("update-downloaded", () => {
-    console.log("update downloaded");
+    logger.info("update downloaded");
     updateWindow.onUpdateDownloaded();
   });
 

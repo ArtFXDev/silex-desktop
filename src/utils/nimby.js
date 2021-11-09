@@ -100,15 +100,16 @@ function checkIfUsed() {
 
   // Check if we check the process (day) or only the resource (night)
   if (hour >= 19 && hour <= 8) {
+    logger.info("[NIMBY] Running in night mode");
+
     // NIGHT MODE
     checkCPUUsage().then((lowUsage) => {
-      logger.info("[NIMBY] Running in night mode");
       if (lowUsage) {
         logger.info("[NIMBY] Your pc is not used, set nimby OFF");
         setNimbyValue(false);
       } else {
         // TODO else display message
-        logger.info("[NIMBY] Your have height cpu usage, let nimby ON");
+        logger.info("[NIMBY] Your have high cpu usage, let nimby ON");
         setNimbyValue(true);
       }
     });
@@ -131,6 +132,7 @@ function setNimbyAutoMode(newMode) {
   if (newMode) {
     nimbyAutoMode = true;
     triggerAutoInterval();
+    checkIfUsed();
   } else {
     nimbyAutoMode = false;
     clearInterval(autoInterval);
