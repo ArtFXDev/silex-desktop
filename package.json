@@ -53,7 +53,7 @@
       "icon": "./src/assets/images/app.ico"
     },
     "linux": {
-      "icon": "./src/assets/images/app.ico"
+      "icon": "./src/assets/images/256x256.png"
     },
     "productName": "silex-desktop",
     "extraResources": [
