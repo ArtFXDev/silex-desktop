@@ -1,6 +1,6 @@
 const { BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const updateWindow = require("./windows/update/updateWindow");
+const updateWindow = require("./windows/update");
 const path = require("path");
 
 // The main window is singleton-like
@@ -80,10 +80,8 @@ function openMainWindow() {
   if (!module.exports.mainWindow.isDestroyed()) {
     // Bring it to the front
     module.exports.mainWindow.show();
-    console.log("Window is still there");
   } else {
     createMainWindow();
-    console.log("creating window");
   }
 }
 
@@ -102,6 +100,7 @@ function setTitleVersion() {
   } else {
     currentVersion = app.getVersion();
   }
+
   mainWindow.setTitle(`Silex v${currentVersion}`);
 }
 
