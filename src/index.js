@@ -1,19 +1,28 @@
 const { app, BrowserWindow, Menu, Tray } = require("electron");
 const path = require("path");
-const mainWindow = require("./mainWindow.js");
+const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
 const socketServer = require("@artfxdev/silex-socket-service");
+const { toggleNimby } = require("./utils/blade");
 
+// TODO: remove
 process.env.SILEX_FRONT_URL = "http://localhost:3000";
-const gotTheLock = app.requestSingleInstanceLock();
 
+// Early exit to prevent the application to be opened twice
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+  return;
+}
+
+const IMAGES_DIR = path.join(__dirname, "assets", "images");
 let tray;
 
 /**
  * Add the tray menu (app icon in task bar)
  */
 function createTrayMenu() {
-  tray = new Tray(path.join(__dirname, "assets", "images", "256x256.png"));
+  tray = new Tray(path.join(IMAGES_DIR, "256x256.png"));
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -24,6 +33,7 @@ function createTrayMenu() {
     { type: "separator" },
     {
       label: `Toggle Nimby`,
+      click: () => toggleNimby().then(updateTrayIcon),
     },
     { type: "separator" },
     {
@@ -36,19 +46,20 @@ function createTrayMenu() {
     },
   ]);
 
-  tray.setToolTip("Silex desktop app");
+  tray.setToolTip("Silex pipeline app");
   tray.setContextMenu(contextMenu);
 }
 
-if (!gotTheLock) {
-  app.quit();
-  return;
+/**
+ * Updates the ray icon with the nimby status (green is on and red is off)
+ */
+function updateTrayIcon(nimbyON) {
+  tray.setImage(path.join(IMAGES_DIR, `256x256${nimbyON ? "" : "_off"}.png`));
 }
 
 app.on("second-instance", () => {
   // Someone tried to run a second instance, we should focus our window.
   if (mainWindow && mainWindow.mainWindow) {
-    console.log(mainWindow.mainWindow.isMinimized());
     if (mainWindow.mainWindow.isMinimized()) mainWindow.mainWindow.restore();
     mainWindow.mainWindow.show();
     mainWindow.mainWindow.focus();
@@ -65,6 +76,9 @@ app.whenReady().then(() => {
 
   // Register IPC events
   require("./ipc");
+
+  // Start Nimby monitoring
+  require("./utils/nimby").startNimbyEventLoop();
 
   // Run the socket server
   socketServer.run();
@@ -88,7 +102,10 @@ app.whenReady().then(() => {
     name: "SilexDesktop",
     path: app.getPath("exe"),
   });
+
   silexLauncher.isEnabled().then((isEnabled) => {
     if (!isEnabled) silexLauncher.enable();
   });
 });
+
+module.exports = { updateTrayIcon };

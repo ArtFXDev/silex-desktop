@@ -16,13 +16,18 @@ contextBridge.exposeInMainWorld("electron", {
       "restartApp",
       "closeSilexUpdate",
       "updateDownloaded",
+      "setNimbyStatus",
+      "setNimbyAutoMode",
     ];
+
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
+    } else {
+      throw new Error("channel is not exposed from Electron");
     }
   },
   receive: (channel, func) => {
-    let validChannels = ["updateDownloaded"];
+    let validChannels = ["updateDownloaded", "bladeStatusUpdate"];
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (_event, ...args) => func(...args));
