@@ -7,10 +7,10 @@
   resolved "https://registry.npmjs.org/7zip-bin/-/7zip-bin-5.1.1.tgz"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@^1.4.1":
-  version "1.4.1"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.1/255b44ec4735738c382e8d2a69fb65b8b8750dc08f5da31a6393ae66bea8d7f7#5be06808d411b92a0feaf776a55c3f22663bfa0e"
-  integrity sha512-7g9dJIPc4hu0mpprV61x4lBq8CRaUWoxlxAprPtcEdRE7tuBLVjnD+++5Lm5PyIUDExydg4H+RD5FB3x+jD0Rg==
+"@artfxdev/silex-socket-service@1.4.2":
+  version "1.4.2"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.2/52714a73d9953d8d90256638e79096f7603c53da160ac502a573dd77430fe059#2753d6f38efc5bc37d220e28149903748039a77e"
+  integrity sha512-yaSHuVAH7MPK9HwX4KFWlLjuyZIo2rJOg/UV05py4I9at+gPCfzRALTJ4pXlGJ7Pb9pN+CKJB2Zuo0z3kP1MFQ==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
