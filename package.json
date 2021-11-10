@@ -30,7 +30,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "^1.3.9",
+    "@artfxdev/silex-socket-service": "^1.4.0",
     "auto-launch": "^5.0.5",
     "axios": "^0.24.0",
     "electron-updater": "^4.3.9",

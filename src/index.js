@@ -1,8 +1,8 @@
 const { app, BrowserWindow, Menu, Tray } = require("electron");
+const socketServer = require("@artfxdev/silex-socket-service");
 const path = require("path");
 const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
-const socketServer = require("@artfxdev/silex-socket-service");
 const { toggleNimby } = require("./utils/blade");
 
 // Early exit to prevent the application to be opened twice
@@ -89,7 +89,7 @@ app.whenReady().then(() => {
   });
 
   // Called on quit
-  app.on("quit", () => socketServer.persistStore());
+  app.on("before-quit", () => socketServer.persistStore());
 
   // Prevent closing the app when the main window is closed
   app.on("window-all-closed", (e) => e.preventDefault());

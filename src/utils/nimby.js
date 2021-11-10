@@ -144,7 +144,7 @@ function startNimbyEventLoop() {
   setInterval(sendBladeStatusToFront, 4000);
 
   // Switch to auto mode after a certain hour
-  setInterval(checkForNimbyAutoMode, 20000);
+  setInterval(checkForNimbyAutoMode, 60000 * 10);
 
   // By default it's in auto mode
   triggerAutoInterval();
