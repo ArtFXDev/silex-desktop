@@ -63,6 +63,10 @@ app.on("second-instance", () => {
   }
 });
 
+process.on("uncaughtException", function (error) {
+  console.log(error);
+});
+
 /**
  * Called when the electron process is ready
  */
