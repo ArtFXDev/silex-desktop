@@ -88,9 +88,6 @@ app.whenReady().then(() => {
     }
   });
 
-  // Called on quit
-  app.on("before-quit", () => socketServer.persistStore());
-
   // Prevent closing the app when the main window is closed
   app.on("window-all-closed", (e) => e.preventDefault());
 
