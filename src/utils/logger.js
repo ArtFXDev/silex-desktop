@@ -1,6 +1,6 @@
 const pino = require("pino");
-// const path = require("path");
-// const os = require("os");
+const path = require("path");
+const os = require("os");
 const fs = require("fs");
 
 // Creates the log dir if doesn't exist
@@ -14,16 +14,16 @@ const transport = pino.transport({
   options: {
     colorize: process.env.NODE_ENV === "development",
     translateTime: true,
-    // destination:
-    //   process.env.NODE_ENV === "development"
-    //     ? undefined
-    //     : path.join(
-    //         process.env.SILEX_LOG_DIR || path.join(os.homedir(), "silex"),
-    //         ".silex_desktop_log"
-    //       ),
+    destination:
+      process.env.NODE_ENV === "development"
+        ? undefined
+        : path.join(
+            process.env.SILEX_LOG_DIR || path.join(os.homedir(), "silex"),
+            ".silex_desktop_log"
+          ),
   },
 });
 
-const logger = pino(/*transport*/);
+const logger = pino(transport);
 
 module.exports = logger;
