@@ -6,7 +6,7 @@ let win;
 function createUpdateWindow() {
   win = new BrowserWindow({
     height: 300,
-    width: 300,
+    width: 310,
     autoHideMenuBar: true,
     resizable: false,
     frame: false,
