@@ -101,7 +101,7 @@
         <span id="pre"></span>
         <div class="center">
           <button class="silex-btn" disabled id="btn-install">
-            Restart/install <span id="count-down"></span>
+            Restart/install <span id="count-down" style="color:#cecece"></span>
           </button>
           <button class="silex-btn" id="btn-close">Close</button>
         </div>
@@ -127,13 +127,12 @@
         btnInstallUpdate.removeAttribute("disabled");
         let countTimer = updateTimeOut;
         var loop = setInterval(function() {
-          countDown.innerHTML = `(${countTimer})`
-          
           if (countTimer < 0) {
             window.electron.send("restartApp");
             clearInterval(loop)
             return;
           }
+          countDown.innerHTML = `(${countTimer})`
           countTimer--;
         }, 1000)
       });
