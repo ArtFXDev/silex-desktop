@@ -26,11 +26,7 @@ function sendBladeStatusToFront() {
         });
       }
     })
-    .catch(() =>
-      logger.error(
-        "[NIMBY] Can't get blade status... Pixar Tractor Blade may not be running"
-      )
-    );
+    .catch(() => {});
 }
 
 function checkForNimbyAutoMode() {

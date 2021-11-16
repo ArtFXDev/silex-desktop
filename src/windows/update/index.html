@@ -101,17 +101,19 @@
         <span id="pre"></span>
         <div class="center">
           <button class="silex-btn" disabled id="btn-install">
-            Restart and install
+            Restart/install <span id="count-down" style="color:#cecece"></span>
           </button>
           <button class="silex-btn" id="btn-close">Close</button>
         </div>
-        <span id="pre">New update available</span>
+        <span id="pre">New update available </span>
       </div>
     </div>
 
     <script>
       const btnInstallUpdate = document.getElementById("btn-install");
       const btnClose = document.getElementById("btn-close");
+      const countDown = document.getElementById("count-down");
+      const updateTimeOut = 5;
 
       btnInstallUpdate.addEventListener("click", (event) => {
         window.electron.send("restartApp");
@@ -123,6 +125,16 @@
 
       window.electron.receive("updateDownloaded", () => {
         btnInstallUpdate.removeAttribute("disabled");
+        let countTimer = updateTimeOut;
+        var loop = setInterval(function() {
+          if (countTimer < 0) {
+            window.electron.send("restartApp");
+            clearInterval(loop)
+            return;
+          }
+          countDown.innerHTML = `(${countTimer})`
+          countTimer--;
+        }, 1000)
       });
     </script>
   </body>

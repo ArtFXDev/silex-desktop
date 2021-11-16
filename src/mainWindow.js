@@ -6,7 +6,7 @@ const logger = require("./utils/logger");
 
 // The main window is singleton-like
 let mainWindow = null;
-
+let loopUpdate = null
 /**
  * Create the browser window.
  */
@@ -34,7 +34,9 @@ function createMainWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     mainWindow.focus();
-    autoUpdater.checkForUpdatesAndNotify();
+    loopUpdate = setInterval(() => {
+      autoUpdater.checkForUpdatesAndNotify();
+    }, 100000)
     setTitleVersion();
   });
 
@@ -64,6 +66,7 @@ function createMainWindow() {
   autoUpdater.on("update-available", () => {
     logger.info("update available");
     openUpdateWindow();
+    clearInterval(loopUpdate);
   });
 
   autoUpdater.on("update-downloaded", () => {
