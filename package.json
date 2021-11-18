@@ -1,6 +1,6 @@
 {
   "name": "silex-desktop",
-  "version": "1.1.6",
+  "version": "1.1.5",
   "description": "Silex desktop application",
   "main": "./src/index.js",
   "author": "ArtFX TDs Gang",
@@ -43,6 +43,7 @@
     "axios": "^0.24.0",
     "electron-updater": "^4.3.9",
     "find-process": "^1.4.5",
+    "node-cron": "^3.0.0",
     "os-utils": "^0.0.14",
     "pino": "^7.1.0",
     "pino-pretty": "^7.2.0"
