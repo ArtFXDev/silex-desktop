@@ -3,10 +3,11 @@ const { autoUpdater } = require("electron-updater");
 const updateWindow = require("./windows/update");
 const path = require("path");
 const logger = require("./utils/logger");
-
+const cron = require("node-cron");
+const { globalShortcut } = require('electron')
 // The main window is singleton-like
 let mainWindow = null;
-let loopUpdate = null
+
 /**
  * Create the browser window.
  */
@@ -34,9 +35,6 @@ function createMainWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     mainWindow.focus();
-    loopUpdate = setInterval(() => {
-      autoUpdater.checkForUpdatesAndNotify();
-    }, 100000)
     setTitleVersion();
   });
 
@@ -59,18 +57,26 @@ function createMainWindow() {
     );
   });
 
+  globalShortcut.register("Control+U", () =>{ 
+    autoUpdater.checkForUpdatesAndNotify();
+  })
+  
   autoUpdater.on("error", (err) => {
     logger.error(err);
   });
 
+  cron.schedule("0 7 * * *", () => {
+    console.log("running cron task: check for update everyday at 7am");
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
   autoUpdater.on("update-available", () => {
     logger.info("update available");
-    openUpdateWindow();
-    clearInterval(loopUpdate);
   });
 
   autoUpdater.on("update-downloaded", () => {
     logger.info("update downloaded");
+    openUpdateWindow();
     updateWindow.onUpdateDownloaded();
   });
 
