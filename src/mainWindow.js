@@ -4,7 +4,8 @@ const updateWindow = require("./windows/update");
 const path = require("path");
 const logger = require("./utils/logger");
 const cron = require("node-cron");
-const { globalShortcut } = require('electron')
+const { globalShortcut } = require("electron");
+
 // The main window is singleton-like
 let mainWindow = null;
 
@@ -57,16 +58,17 @@ function createMainWindow() {
     );
   });
 
-  globalShortcut.register("Control+U", () =>{ 
+  globalShortcut.register("Control+U", () => {
+    logger.info("Ctrl+U: check for update");
     autoUpdater.checkForUpdatesAndNotify();
-  })
-  
+  });
+
   autoUpdater.on("error", (err) => {
     logger.error(err);
   });
 
   cron.schedule("0 7 * * *", () => {
-    console.log("running cron task: check for update everyday at 7am");
+    logger.info("running cron task: check for update everyday at 7am");
     autoUpdater.checkForUpdatesAndNotify();
   });
 
