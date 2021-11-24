@@ -25,7 +25,7 @@ function createTrayMenu() {
     {
       label: "Open Silex",
       type: "normal",
-      click: () => mainWindow.openMainWindow(),
+      click: mainWindow.openMainWindow,
     },
     { type: "separator" },
     {
@@ -45,6 +45,7 @@ function createTrayMenu() {
 
   tray.setToolTip("Silex pipeline app");
   tray.setContextMenu(contextMenu);
+  tray.on("click", mainWindow.openMainWindow);
 }
 
 /**
