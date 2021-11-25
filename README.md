@@ -26,18 +26,6 @@ $ yarn install # Install the dependencies
 
 ## Usage
 
-### Environment variables
-
-Before starting the application, make sure the variables defined in the [`.env`](.env) file are correct. You can take a look at the variables defined in the `.env.example` file.
-
-They are:
-
-- `SILEX_FRONT_URL` - the url of [silex-front](https://github.com/ArtFXDev/silex-front) (either hosted or running in dev mode)
-
-- `ZOU_API_URL` - the url of the Zou server (like `http://my-zou-server`). It's the same URL as the Kitsu app.
-
-- `PORT` - the port used by [silex-socket-service](https://github.com/ArtFXDev/silex-socket-service) which is 5118
-
 ### Available scripts
 
 - 🚀 `yarn start` -> Opens an instance of the Electron app
