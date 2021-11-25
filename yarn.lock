@@ -7,14 +7,15 @@
   resolved "https://registry.npmjs.org/7zip-bin/-/7zip-bin-5.1.1.tgz"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@^1.4.5":
-  version "1.4.5"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.5/102973a577bac9537ea263a858d3f7133b84711e7994a2e1a06d638e5940c071#a56a5f8ce8194a2df8daab0c8dfe40735a45fd92"
-  integrity sha512-l7R+HOJcWNigxdz6M2TF+WwxsFms6RyhlBqc+EioFZhMaUZ5xikyjnaPQlKUsY/YV6XGXfsF+z4eflmG467nhw==
+"@artfxdev/silex-socket-service@^1.4.6":
+  version "1.4.6"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.6/0861137123850c85503f4d1d6c6960c82210417b4bca3d37744b699f0e9db219#99ae861b9ad39f5f7812b5b2884c502704b013e5"
+  integrity sha512-7xWXFl+Pje7aONnKHG6xf2OQJlvKRedaTSbudn6zidSjrDer2dlpsDWTXoTHnnRRk1TGSvxvapvzAVKVRPT17g==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
     cross-env "^7.0.3"
+    deep-object-diff "^1.1.0"
     deepmerge "^4.2.2"
     express "^4.17.1"
     pino "^7.1.0"
@@ -1198,6 +1199,11 @@ deep-is@^0.1.3:
   version "0.1.4"
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz"
   integrity sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==
+
+deep-object-diff@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.1.0.tgz#d6fabf476c2ed1751fc94d5ca693d2ed8c18bc5a"
+  integrity sha512-b+QLs5vHgS+IoSNcUE4n9HP2NwcHj7aqnJWsjPtuG75Rh5TOaGt0OjAYInh77d5T16V5cRDC+Pw/6ZZZiETBGw==
 
 deepmerge@^4.2.2:
   version "4.2.2"
