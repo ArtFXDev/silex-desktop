@@ -3,7 +3,7 @@
   "version": "1.1.10",
   "description": "Silex desktop application",
   "main": "./src/index.js",
-  "author": "ArtFX TDs Gang",
+  "author": "ArtFX TDs",
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -25,7 +25,7 @@
     "url": "https://github.com/ArtFXDev/silex-desktop.git"
   },
   "engines": {
-    "node": ">15"
+    "node": ">=16.10.0"
   },
   "scripts": {
     "electron": "electron src",
