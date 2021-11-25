@@ -4,6 +4,9 @@ const path = require("path");
 const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
 const { toggleNimby } = require("./utils/blade");
+const store = require("./utils/store");
+const { restoreStore, persistStore } = require("./utils/store/persistence");
+const logger = require("./utils/logger");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -29,8 +32,22 @@ function createTrayMenu() {
     },
     { type: "separator" },
     {
-      label: `Toggle Nimby`,
+      label: "Toggle Nimby",
       click: () => toggleNimby().then(updateTrayIcon),
+    },
+    { type: "separator" },
+    {
+      label: "Toggle dev mode",
+      click: () => {
+        store.instance.data.devMode = !store.instance.data.devMode;
+        persistStore();
+
+        mainWindow.mainWindow.webContents.session.clearCache(() =>
+          logger.info("Cleared window cache")
+        );
+
+        mainWindow.loadSilexFrontUrl();
+      },
     },
     { type: "separator" },
     {
@@ -64,6 +81,9 @@ app.on("second-instance", () => {
   }
 });
 
+/**
+ * Catch all uncaught exceptions to the console
+ */
 process.on("uncaughtException", function (error) {
   console.log(error);
 });
@@ -72,6 +92,9 @@ process.on("uncaughtException", function (error) {
  * Called when the electron process is ready
  */
 app.whenReady().then(() => {
+  restoreStore();
+  persistStore();
+
   // Create tray menu and window
   createTrayMenu();
   mainWindow.createMainWindow();

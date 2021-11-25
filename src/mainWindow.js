@@ -5,6 +5,7 @@ const path = require("path");
 const logger = require("./utils/logger");
 const cron = require("node-cron");
 const { globalShortcut } = require("electron");
+const store = require("./utils/store");
 
 // The main window is singleton-like
 let mainWindow = null;
@@ -48,13 +49,13 @@ function createMainWindow() {
   // Disable menu bar
   mainWindow.setMenuBarVisibility(false);
 
-  // Serves the silex frontend directly
-  mainWindow.loadURL(process.env.SILEX_FRONT_URL);
+  const frontUrl = getSilexFrontUrl();
+  mainWindow.loadURL(frontUrl);
 
   mainWindow.webContents.on("did-fail-load", () => {
     mainWindow.loadURL(
       path.join("file:/", __dirname, "pages", "failed-loading.html") +
-        `?SILEX_FRONT_URL=${process.env.SILEX_FRONT_URL}`
+        `?SILEX_FRONT_URL=${frontUrl}`
     );
   });
 
@@ -83,6 +84,22 @@ function createMainWindow() {
   });
 
   module.exports.mainWindow = mainWindow;
+}
+
+function getSilexFrontUrl() {
+  let silexFrontUrl = process.env.SILEX_FRONT_URL;
+
+  // Replace to preprod if we are in dev mode
+  if (store.instance.data.devMode && !silexFrontUrl.includes("preprod")) {
+    silexFrontUrl = silexFrontUrl.replace("prod", "preprod");
+    logger.info(`Loading url ${silexFrontUrl}`);
+  }
+
+  return silexFrontUrl;
+}
+
+function loadSilexFrontUrl() {
+  mainWindow.loadURL(getSilexFrontUrl());
 }
 
 /**
@@ -120,4 +137,5 @@ module.exports = {
   mainWindow,
   createMainWindow,
   openMainWindow,
+  loadSilexFrontUrl,
 };

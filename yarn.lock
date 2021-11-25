@@ -7,10 +7,8 @@
   resolved "https://registry.npmjs.org/7zip-bin/-/7zip-bin-5.1.1.tgz"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@^1.4.6":
+"@artfxdev/silex-socket-service@file:../silex-socket-service":
   version "1.4.6"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.6/0861137123850c85503f4d1d6c6960c82210417b4bca3d37744b699f0e9db219#99ae861b9ad39f5f7812b5b2884c502704b013e5"
-  integrity sha512-7xWXFl+Pje7aONnKHG6xf2OQJlvKRedaTSbudn6zidSjrDer2dlpsDWTXoTHnnRRk1TGSvxvapvzAVKVRPT17g==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
@@ -1384,10 +1382,10 @@ electron-updater@^4.3.9:
     lodash.isequal "^4.5.0"
     semver "^7.3.5"
 
-electron@^13.0.1:
-  version "13.5.2"
-  resolved "https://registry.npmjs.org/electron/-/electron-13.5.2.tgz"
-  integrity sha512-CPakwDpy5m8dL0383F5uJboQcVtn9bT/+6/wdDKo8LuTUO9aER1TF41v7feZgZW2c+UwoGPWa814ElSQ3qta2A==
+electron@^13.5.2:
+  version "13.6.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.6.2.tgz#878e01d78cd442a8ec28340b271608ba5b7c7ebd"
+  integrity sha512-ZXx9t68yXftvNZVnQ7v2XHcnH+MPUF6LNStoz4MMXuWpkF9gq3qwjcYSqnbM4wiVkvWVHIyYvt1yemmStza9dQ==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"

@@ -7,9 +7,25 @@ const findProcess = require("find-process");
 const path = require("path");
 const CONFIG = require("../config/config.json");
 const logger = require("../utils/logger");
+const store = require("./store");
+const { persistStore } = require("./store/persistence");
 
-let nimbyAutoMode = true;
 let autoInterval = null;
+
+function setNimbyAutoMode(newMode) {
+  logger.info(`[NIMBY] Switching nimbyMode to: ${newMode ? "AUTO" : "MANUAL"}`);
+
+  if (newMode) {
+    store.instance.data.nimbyAutoMode = true;
+    triggerAutoInterval();
+    checkIfUsed();
+  } else {
+    store.instance.data.nimbyAutoMode = false;
+    clearInterval(autoInterval);
+  }
+
+  persistStore();
+}
 
 /**
  * Queries the blade status and send it to the window process with IPC
@@ -22,7 +38,7 @@ function sendBladeStatusToFront() {
       if (mainWindow.isVisible()) {
         mainWindow.webContents.send("bladeStatusUpdate", {
           ...response.data,
-          nimbyAutoMode,
+          nimbyAutoMode: store.instance.data.nimbyAutoMode,
         });
       }
     })
@@ -33,9 +49,9 @@ function checkForNimbyAutoMode() {
   logger.info("[NIMBY] Checking for auto mode...");
   const hour = new Date().getHours();
 
-  if (!nimbyAutoMode && hour >= 18 && hour <= 8) {
+  if (!store.instance.data.nimbyAutoMode && hour >= 19 && hour <= 8) {
     logger.info("[NIMBY] Switching to auto mode");
-    nimbyAutoMode = true;
+    setNimbyAutoMode(true);
   }
 }
 
@@ -121,18 +137,6 @@ function checkIfUsed() {
  */
 function triggerAutoInterval() {
   autoInterval = setInterval(checkIfUsed, 60000);
-}
-
-function setNimbyAutoMode(newMode) {
-  logger.info(`[NIMBY] Switching nimbyMode to: ${newMode ? "AUTO" : "MANUAL"}`);
-  if (newMode) {
-    nimbyAutoMode = true;
-    triggerAutoInterval();
-    checkIfUsed();
-  } else {
-    nimbyAutoMode = false;
-    clearInterval(autoInterval);
-  }
 }
 
 function startNimbyEventLoop() {
