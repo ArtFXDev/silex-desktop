@@ -59,11 +59,6 @@ function createMainWindow() {
     );
   });
 
-  globalShortcut.register("Control+U", () => {
-    logger.info("Ctrl+U: check for update");
-    autoUpdater.checkForUpdatesAndNotify();
-  });
-
   autoUpdater.on("error", (err) => {
     logger.error(err);
   });
