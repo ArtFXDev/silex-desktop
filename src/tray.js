@@ -31,7 +31,7 @@ function setFrontMode(mode) {
 /**
  * Add the tray menu (app icon in task bar)
  */
-function updateTrayMenu(nimbyON) {
+function updateTrayMenu(nimbyON = false) {
   updateTrayIcon(nimbyON);
 
   const contextMenu = Menu.buildFromTemplate([
@@ -100,6 +100,7 @@ function initializeTray() {
   blade.getBladeStatus().then((response) => {
     updateTrayMenu(response.data.nimbyON);
   });
+  updateTrayMenu();
 }
 
 module.exports = { tray, updateTrayMenu, initializeTray };
