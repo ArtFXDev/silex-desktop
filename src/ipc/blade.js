@@ -8,7 +8,9 @@ ipcMain.on("setNimbyStatus", (_event, newStatus) => {
     .then(() => {
       sendBladeStatusToFront();
     })
-    .catch(() => logger.error("[NIMBY] Couldn't set the nimby status"));
+    .catch((err) => {
+      logger.error("[NIMBY] Couldn't set the nimby status", err);
+    });
 });
 
 ipcMain.on("setNimbyAutoMode", (_event, newMode) => {
