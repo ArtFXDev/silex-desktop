@@ -7,15 +7,14 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.1.1.tgz#9274ec7460652f9c632c59addf24efb1684ef876"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@1.4.6":
-  version "1.4.6"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.6/0861137123850c85503f4d1d6c6960c82210417b4bca3d37744b699f0e9db219#99ae861b9ad39f5f7812b5b2884c502704b013e5"
-  integrity sha512-7xWXFl+Pje7aONnKHG6xf2OQJlvKRedaTSbudn6zidSjrDer2dlpsDWTXoTHnnRRk1TGSvxvapvzAVKVRPT17g==
+"@artfxdev/silex-socket-service@1.4.7":
+  version "1.4.7"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.7/1b63192c65c9b4a8fe7f6ee02916e75e04d056ec2626154b4d72462750741bcd#0e58c1189c48332793034403f073aee956a79a69"
+  integrity sha512-PlwDrBsp5bxr2nvoAWEWePGzaM2VpfWYfFk4jt8DYdKZPw3cgDgwLB+2ziqoe4fbc/mXx7RNdgvsimJ0v++2JA==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
     cross-env "^7.0.3"
-    deep-object-diff "^1.1.0"
     deepmerge "^4.2.2"
     express "^4.17.1"
     pino "^7.1.0"
@@ -1163,10 +1162,17 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@~4.3.1, debug@~4.3.2:
+debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
   version "4.3.2"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
   integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
+  dependencies:
+    ms "2.1.2"
+
+debug@~4.3.1, debug@~4.3.2:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
+  integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
   dependencies:
     ms "2.1.2"
 
@@ -1199,11 +1205,6 @@ deep-is@^0.1.3:
   version "0.1.4"
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz"
   integrity sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==
-
-deep-object-diff@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.1.0.tgz#d6fabf476c2ed1751fc94d5ca693d2ed8c18bc5a"
-  integrity sha512-b+QLs5vHgS+IoSNcUE4n9HP2NwcHj7aqnJWsjPtuG75Rh5TOaGt0OjAYInh77d5T16V5cRDC+Pw/6ZZZiETBGw==
 
 deepmerge@^4.2.2:
   version "4.2.2"
