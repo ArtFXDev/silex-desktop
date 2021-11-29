@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld("electron", {
       "updateDownloaded",
       "setNimbyStatus",
       "setNimbyAutoMode",
+      "killAllActiveTasksOnBlade",
     ];
 
     if (validChannels.includes(channel)) {
@@ -27,7 +28,12 @@ contextBridge.exposeInMainWorld("electron", {
     }
   },
   receive: (channel, func) => {
-    let validChannels = ["updateDownloaded", "bladeStatusUpdate"];
+    let validChannels = [
+      "updateDownloaded",
+      "bladeStatusUpdate",
+      "operationSuccess",
+      "operationError",
+    ];
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (_event, ...args) => func(...args));

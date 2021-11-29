@@ -133,7 +133,7 @@ function checkIfUsed() {
  * Starts the interval when in auto mode
  */
 function triggerAutoInterval() {
-  autoInterval = setInterval(checkIfUsed, 60000);
+  autoInterval = setInterval(checkIfUsed, 60000 * 15);
 }
 
 function startNimbyEventLoop() {
@@ -144,7 +144,7 @@ function startNimbyEventLoop() {
   setInterval(checkForNimbyAutoMode, 60000 * 10);
 
   // By default it's in auto mode
-  triggerAutoInterval();
+  if (store.instance.data.nimbyAutoMode) triggerAutoInterval();
 }
 
 module.exports = {
