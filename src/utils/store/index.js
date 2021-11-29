@@ -5,8 +5,8 @@ const store = {
   /** Auto mode value for the Nimby */
   nimbyAutoMode: true,
 
-  /** Dev or prod mode, choose the right silex front url */
-  devMode: false,
+  /** Dev, prod or beta mode, choosing the silex front url */
+  frontMode: "prod",
 };
 
 // ----------------------------------------------------

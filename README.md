@@ -16,6 +16,21 @@ We also have [silex-socket-service](https://github.com/ArtFXDev/silex-socket-ser
 
 ## Installation
 
+### Prerequisites
+
+Since the desktop application requires [silex-socket-service](https://github.com/ArtFXDev/silex-socket-service) as a dependency and it's part of the ArtFX organization, you need to do the following:
+
+- Create a `.npmrc` file in the root folder with that content:
+
+  ```properties
+  //npm.pkg.github.com/:_authToken=<YOUR_GITHUB_TOKEN>
+  @artfxdev:registry=https://npm.pkg.github.com/
+  ```
+
+- Replace `<YOUR_GITHUB_TOKEN>` with your GitHub access token (see [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for where to get it).
+
+### Install dependencies
+
 The package manager used is [Yarn](https://yarnpkg.com/). Clone the repository and install the dependencies:
 
 ```bash

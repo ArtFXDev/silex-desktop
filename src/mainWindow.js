@@ -4,7 +4,6 @@ const updateWindow = require("./windows/update");
 const path = require("path");
 const logger = require("./utils/logger");
 const cron = require("node-cron");
-const { globalShortcut } = require("electron");
 const store = require("./utils/store");
 
 // The main window is singleton-like
@@ -34,7 +33,7 @@ function createMainWindow() {
 
   // Show the window when ready to avoid visual blinking
   // See : https://www.electronjs.org/docs/api/browser-window#setting-backgroundcolor
-  mainWindow.once("ready-to-show", () => {
+  mainWindow.on("ready-to-show", () => {
     mainWindow.show();
     mainWindow.focus();
     setTitleVersion();
@@ -57,11 +56,6 @@ function createMainWindow() {
       path.join("file:/", __dirname, "pages", "failed-loading.html") +
         `?SILEX_FRONT_URL=${frontUrl}`
     );
-  });
-
-  globalShortcut.register("Control+U", () => {
-    logger.info("Ctrl+U: check for update");
-    autoUpdater.checkForUpdatesAndNotify();
   });
 
   autoUpdater.on("error", (err) => {
@@ -87,19 +81,26 @@ function createMainWindow() {
 }
 
 function getSilexFrontUrl() {
-  let silexFrontUrl = process.env.SILEX_FRONT_URL;
+  let silexFrontUrl;
 
-  // Replace to preprod if we are in dev mode
-  if (store.instance.data.devMode && !silexFrontUrl.includes("preprod")) {
-    silexFrontUrl = silexFrontUrl.replace("prod", "preprod");
-    logger.info(`Loading url ${silexFrontUrl}`);
+  switch (store.instance.data.frontMode) {
+    case "beta":
+      silexFrontUrl = process.env.SILEX_FRONT_URL.replace("prod", "preprod");
+      break;
+    case "dev":
+      silexFrontUrl = "http://localhost:3000";
+      break;
+    default:
+      silexFrontUrl = process.env.SILEX_FRONT_URL;
   }
 
   return silexFrontUrl;
 }
 
 function loadSilexFrontUrl() {
-  mainWindow.loadURL(getSilexFrontUrl());
+  const url = getSilexFrontUrl();
+  mainWindow.loadURL(url);
+  logger.info(`Loading front url ${url}`);
 }
 
 /**
@@ -130,7 +131,9 @@ function setTitleVersion() {
     currentVersion = app.getVersion();
   }
 
-  mainWindow.setTitle(`Silex v${currentVersion}`);
+  mainWindow.setTitle(
+    `Silex v${currentVersion} (${store.instance.data.frontMode})`
+  );
 }
 
 module.exports = {

@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [master]
+    branches: [main]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: "16.10"
 
       - name: Create .npmrc
         run: |
@@ -24,10 +26,10 @@ jobs:
           echo //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }} >> .npmrc
 
       - name: Init project
-        run: npm i
+        run: yarn install --frozen-lockfile
 
       - name: Build/release Electron app Linux
-        run: npm run build:linux
+        run: yarn build:linux
 
       - name: Prepare Upload Artifact
         run: |
@@ -49,6 +51,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: "16.10"
 
       - name: Create .npmrc
         shell: powershell
@@ -57,10 +61,10 @@ jobs:
           Add-Content .npmrc -Value @artfxdev:registry=https://npm.pkg.github.com/
           Add-Content .npmrc -Value //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GHR }}
       - name: Init project
-        run: npm i
+        run: yarn install --frozen-lockfile
 
       - name: Build/release Electron app Windows
-        run: npm run build:windows
+        run: yarn build:windows
 
       - name: Prepare Upload Artifact
         shell: powershell
