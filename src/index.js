@@ -1,75 +1,15 @@
-const { app, BrowserWindow, Menu, Tray } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const socketServer = require("@artfxdev/silex-socket-service");
-const path = require("path");
 const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
-const { toggleNimby } = require("./utils/blade");
-const store = require("./utils/store");
 const { restoreStore, persistStore } = require("./utils/store/persistence");
-const logger = require("./utils/logger");
+const { initializeTray } = require("./tray");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
   return;
-}
-
-const IMAGES_DIR = path.join(__dirname, "assets", "images");
-let tray;
-
-/**
- * Add the tray menu (app icon in task bar)
- */
-function createTrayMenu() {
-  tray = new Tray(path.join(IMAGES_DIR, "256x256.png"));
-
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "Open Silex",
-      type: "normal",
-      click: mainWindow.openMainWindow,
-    },
-    { type: "separator" },
-    {
-      label: "Toggle Nimby",
-      click: () => toggleNimby().then(updateTrayIcon),
-    },
-    { type: "separator" },
-    {
-      label: "Toggle dev mode",
-      click: () => {
-        store.instance.data.devMode = !store.instance.data.devMode;
-        persistStore();
-
-        mainWindow.mainWindow.webContents.session.clearCache(() =>
-          logger.info("Cleared window cache")
-        );
-
-        mainWindow.loadSilexFrontUrl();
-      },
-    },
-    { type: "separator" },
-    {
-      label: "Quit Silex",
-      type: "normal",
-      click: () => {
-        app.quit();
-        app.exit();
-      },
-    },
-  ]);
-
-  tray.setToolTip("Silex pipeline app");
-  tray.setContextMenu(contextMenu);
-  tray.on("click", mainWindow.openMainWindow);
-}
-
-/**
- * Updates the ray icon with the nimby status (green is on and red is off)
- */
-function updateTrayIcon(nimbyON) {
-  tray.setImage(path.join(IMAGES_DIR, `256x256${nimbyON ? "" : "_off"}.png`));
 }
 
 app.on("second-instance", () => {
@@ -95,8 +35,7 @@ app.whenReady().then(() => {
   restoreStore();
   persistStore();
 
-  // Create tray menu and window
-  createTrayMenu();
+  initializeTray();
   mainWindow.createMainWindow();
 
   // Register IPC events
@@ -129,5 +68,3 @@ app.whenReady().then(() => {
     if (!isEnabled) silexLauncher.enable();
   });
 });
-
-module.exports = { updateTrayIcon };
