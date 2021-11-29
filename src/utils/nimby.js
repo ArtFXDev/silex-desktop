@@ -1,5 +1,4 @@
 const { mainWindow } = require("../mainWindow");
-const { updateTrayIcon } = require("../index");
 const { getBladeStatus, setNimbyValue } = require("./blade");
 const { powerMonitor } = require("electron");
 const os = require("os-utils");
@@ -31,18 +30,14 @@ function setNimbyAutoMode(newMode) {
  * Queries the blade status and send it to the window process with IPC
  */
 function sendBladeStatusToFront() {
-  getBladeStatus()
-    .then((response) => {
-      updateTrayIcon(response.data.nimby !== "None");
-
-      if (mainWindow.isVisible()) {
-        mainWindow.webContents.send("bladeStatusUpdate", {
-          ...response.data,
-          nimbyAutoMode: store.instance.data.nimbyAutoMode,
-        });
-      }
-    })
-    .catch(() => {});
+  getBladeStatus().then((response) => {
+    if (mainWindow.isVisible()) {
+      mainWindow.webContents.send("bladeStatusUpdate", {
+        ...response.data,
+        nimbyAutoMode: store.instance.data.nimbyAutoMode,
+      });
+    }
+  });
 }
 
 function checkForNimbyAutoMode() {
@@ -100,11 +95,13 @@ function checkForRunningProcesses() {
 function checkIfUsed() {
   if (isUserActive()) {
     logger.info("[NIMBY] User is active");
+
     getBladeStatus().then((response) => {
       if (response.data.nimby === "None") {
         setNimbyValue(true);
       }
     });
+
     return;
   }
 
