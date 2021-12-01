@@ -36,7 +36,7 @@ app.whenReady().then(() => {
   persistStore();
 
   initializeTray();
-  mainWindow.createMainWindow();
+  mainWindow.createMainWindow(process.argv[1] === "--hidden");
 
   // Register IPC events
   require("./ipc");
@@ -60,11 +60,15 @@ app.whenReady().then(() => {
 
   // start on startup
   const silexLauncher = new AutoLaunch({
-    name: "SilexDesktop",
+    name: "silex-desktop",
     path: app.getPath("exe"),
+    isHidden: true,
   });
 
   silexLauncher.isEnabled().then((isEnabled) => {
-    if (!isEnabled) silexLauncher.enable();
+    if (!isEnabled && process.env.NODE_ENV !== "development") {
+      console.log("Enabling auto launch");
+      silexLauncher.enable();
+    }
   });
 });
