@@ -1,5 +1,9 @@
 const { mainWindow } = require("../mainWindow");
-const { getBladeStatus, setNimbyValue } = require("./blade");
+const {
+  getBladeStatus,
+  setNimbyValue,
+  killRunningTasksOnBlade,
+} = require("./blade");
 const { powerMonitor } = require("electron");
 const os = require("os-utils");
 const findProcess = require("find-process");
@@ -98,7 +102,9 @@ function checkIfUsed() {
 
     getBladeStatus().then((response) => {
       if (response.data.nimby === "None") {
-        setNimbyValue(true);
+        setNimbyValue(true).then(() =>
+          killRunningTasksOnBlade(response.data.hnm)
+        );
       }
     });
 

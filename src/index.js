@@ -4,6 +4,7 @@ const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
 const { restoreStore, persistStore } = require("./utils/store/persistence");
 const { initializeTray } = require("./tray");
+const { autoUpdater } = require("electron-updater");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -36,7 +37,12 @@ app.whenReady().then(() => {
   persistStore();
 
   initializeTray();
-  mainWindow.createMainWindow();
+  mainWindow.createMainWindow(process.argv.includes("--hidden"));
+
+  // Auto run on startup and run update
+  if (process.argv.includes("--hidden")) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
 
   // Register IPC events
   require("./ipc");
@@ -60,11 +66,15 @@ app.whenReady().then(() => {
 
   // start on startup
   const silexLauncher = new AutoLaunch({
-    name: "SilexDesktop",
+    name: "silex-desktop",
     path: app.getPath("exe"),
+    isHidden: true,
   });
 
   silexLauncher.isEnabled().then((isEnabled) => {
-    if (!isEnabled) silexLauncher.enable();
+    if (!isEnabled && process.env.NODE_ENV !== "development") {
+      console.log("Enabling auto launch");
+      silexLauncher.enable();
+    }
   });
 });

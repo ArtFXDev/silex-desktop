@@ -1,5 +1,6 @@
 const axios = require("axios").default;
 const logger = require("../utils/logger");
+const { asciiToHexa } = require("../utils/string");
 
 const BLADE_URL = "http://localhost:9005";
 
@@ -35,4 +36,27 @@ async function toggleNimby() {
   return await setNimbyValue(response.data.nimby === "None");
 }
 
-module.exports = { getBladeStatus, setNimbyValue, toggleNimby };
+async function killRunningTasksOnBlade(hnm) {
+  const response = await axios.get("http://tractor/Tractor/monitor?q=gentoken");
+
+  const challengeEncoded = asciiToHexa(response.data.challenge + "|");
+
+  const response_1 = await axios.get(
+    `http://tractor/Tractor/monitor?q=login&user=nimby&c=${challengeEncoded}`
+  );
+
+  if (response_1.data.rc === 0) {
+    return axios.get(
+      `http://tractor/Tractor/queue?q=ejectall&blade=${hnm}&tsid=${response_1.data.tsid}`
+    );
+  } else {
+    throw new Error("Can't login to Tractor with nimby account");
+  }
+}
+
+module.exports = {
+  getBladeStatus,
+  setNimbyValue,
+  toggleNimby,
+  killRunningTasksOnBlade,
+};

@@ -12,7 +12,7 @@ let mainWindow = null;
 /**
  * Create the browser window.
  */
-function createMainWindow() {
+function createMainWindow(hidden = false) {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -34,8 +34,10 @@ function createMainWindow() {
   // Show the window when ready to avoid visual blinking
   // See : https://www.electronjs.org/docs/api/browser-window#setting-backgroundcolor
   mainWindow.on("ready-to-show", () => {
-    mainWindow.show();
-    mainWindow.focus();
+    if (!hidden) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
     setTitleVersion();
   });
 
