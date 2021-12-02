@@ -4,6 +4,7 @@ const mainWindow = require("./mainWindow");
 const AutoLaunch = require("auto-launch");
 const { restoreStore, persistStore } = require("./utils/store/persistence");
 const { initializeTray } = require("./tray");
+const { autoUpdater } = require("electron-updater");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -36,7 +37,12 @@ app.whenReady().then(() => {
   persistStore();
 
   initializeTray();
-  mainWindow.createMainWindow(process.argv[1] === "--hidden");
+  mainWindow.createMainWindow(process.argv.includes("--hidden"));
+
+  // Auto run on startup and run update
+  if (process.argv.includes("--hidden")) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
 
   // Register IPC events
   require("./ipc");
