@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.1.1.tgz#9274ec7460652f9c632c59addf24efb1684ef876"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@1.4.8":
-  version "1.4.8"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.8/776b80588d82afa8aafe8dc323faee41579b8c94c00493c75b373dc6059c3277#92f81289cce213778892c3c07496140c1ea13c75"
-  integrity sha512-NPtFSHhwnZAJDQ4/6yDXEcYCC/OBNtm15SmTcdT6PEDrvkguYrsGbKgnE1zkxDui4LbHbAlAlF30PHsn4HxZSw==
+"@artfxdev/silex-socket-service@1.4.9":
+  version "1.4.9"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.4.9/5bb174a1863c6b2ece7a3399f6a4597d704383ae5c75d9b04e40fe25db657eb0#85bfe6380252ed45d57380852effb6936b706a9e"
+  integrity sha512-8dYZwIDg8xSXpboUXdwFE96dLmRGj8rBoOaM1I4oI6GONjZsA9NZD8bmEBY+wBz5r81uHMOPfGGwDwCOGtSF6w==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
@@ -331,10 +331,15 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/node@*", "@types/node@>=10.0.0":
+"@types/node@*":
   version "16.11.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.10.tgz#2e3ad0a680d96367103d3e670d41c2fed3da61ae"
   integrity sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA==
+
+"@types/node@>=10.0.0":
+  version "16.11.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.12.tgz#ac7fb693ac587ee182c3780c26eb65546a1a3c10"
+  integrity sha512-+2Iggwg7PxoO5Kyhvsq9VarmPbIelXP070HMImEpbtGCoyWNINQj4wzjbQCXzdHTRXnqufutJb5KAURZANNBAw==
 
 "@types/node@^14.6.2":
   version "14.17.26"
