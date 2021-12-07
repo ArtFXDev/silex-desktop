@@ -8,13 +8,16 @@ if (process.env.SILEX_LOG_DIR && !fs.existsSync(process.env.SILEX_LOG_DIR)) {
   fs.mkdirSync(process.env.SILEX_LOG_DIR, { recursive: true });
 }
 
+const isInDev = process.env.NODE_ENV === "development";
+
 const logger = pino(
   {
+    level: isInDev ? "debug" : process.env.LOG_LEVEL || "warn",
     prettyPrint: true,
-    colorize: process.env.NODE_ENV === "development",
+    colorize: isInDev,
     translateTime: true,
   },
-  process.env.NODE_ENV === "development"
+  isInDev
     ? undefined
     : path.join(process.env.SILEX_LOG_DIR, ".silex_desktop_log")
 );
