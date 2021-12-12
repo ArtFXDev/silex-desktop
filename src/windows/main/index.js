@@ -1,16 +1,12 @@
 const { BrowserWindow, app } = require("electron");
-const { autoUpdater } = require("electron-updater");
-const updateWindow = require("./windows/update");
 const path = require("path");
-const logger = require("./utils/logger");
-const cron = require("node-cron");
-const store = require("./utils/store");
+const store = require("../../utils/store");
 
 // The main window is singleton-like
 let mainWindow = null;
 
 /**
- * Create the browser window.
+ * Create the main Silex window
  */
 function createMainWindow(hidden = false) {
   mainWindow = new BrowserWindow({
@@ -18,10 +14,9 @@ function createMainWindow(hidden = false) {
     height: 800,
     minWidth: 940,
     minHeight: 480,
-    webviewTag: true,
     backgroundColor: "#2c2b2b",
     show: false,
-    icon: path.join(__dirname, "assets", "images", "256x256.png"),
+    icon: `${__dirname}/../../assets/images/256x256.png`,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -41,6 +36,7 @@ function createMainWindow(hidden = false) {
     setTitleVersion();
   });
 
+  // Do not close the window on close but hide it
   mainWindow.on("close", function (event) {
     event.preventDefault();
     mainWindow.hide();
@@ -53,35 +49,20 @@ function createMainWindow(hidden = false) {
   const frontUrl = getSilexFrontUrl();
   mainWindow.loadURL(frontUrl);
 
+  // Show the fail to load window
   mainWindow.webContents.on("did-fail-load", () => {
     mainWindow.loadURL(
-      path.join("file:/", __dirname, "pages", "failed-loading.html") +
+      path.join("file:/", __dirname, "failed-loading.html") +
         `?SILEX_FRONT_URL=${frontUrl}`
     );
-  });
-
-  autoUpdater.on("error", (err) => {
-    logger.error(err);
-  });
-
-  cron.schedule("0 7 * * *", () => {
-    logger.info("running cron task: check for update everyday at 7am");
-    autoUpdater.checkForUpdatesAndNotify();
-  });
-
-  autoUpdater.on("update-available", () => {
-    logger.info("update available");
-  });
-
-  autoUpdater.on("update-downloaded", () => {
-    logger.info("update downloaded");
-    openUpdateWindow();
-    updateWindow.onUpdateDownloaded();
   });
 
   module.exports.mainWindow = mainWindow;
 }
 
+/**
+ * Returns the
+ */
 function getSilexFrontUrl() {
   let silexFrontUrl;
 
@@ -93,16 +74,19 @@ function getSilexFrontUrl() {
       silexFrontUrl = "http://localhost:3000";
       break;
     default:
+      // prod
       silexFrontUrl = process.env.SILEX_FRONT_URL;
   }
 
   return silexFrontUrl;
 }
 
+/**
+ * Loads the proper url depending on the front-end mode
+ */
 function loadSilexFrontUrl() {
   const url = getSilexFrontUrl();
   mainWindow.loadURL(url);
-  logger.info(`Loading front url ${url}`);
 }
 
 /**
@@ -118,17 +102,13 @@ function openMainWindow() {
 }
 
 /**
- * Called when a new update of the application is found on GitHub
+ * Sets the title of the window to have the package version
  */
-function openUpdateWindow() {
-  updateWindow.createUpdateWindow();
-}
-
 function setTitleVersion() {
   let { currentVersion } = "";
 
   if (process.env.NODE_ENV === "development") {
-    currentVersion = require("../package.json").version;
+    currentVersion = require("../../../package.json").version;
   } else {
     currentVersion = app.getVersion();
   }

@@ -1,4 +1,4 @@
-const { mainWindow } = require("../mainWindow");
+const { mainWindow } = require("../windows/main");
 const {
   getBladeStatus,
   setNimbyValue,
