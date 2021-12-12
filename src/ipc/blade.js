@@ -3,7 +3,7 @@ const { setNimbyValue, killRunningTasksOnBlade } = require("../utils/blade");
 const { sendBladeStatusToFront, setNimbyAutoMode } = require("../utils/nimby");
 const logger = require("../utils/logger");
 
-const { mainWindow } = require("../mainWindow");
+const { mainWindow } = require("../windows/main");
 
 ipcMain.on("setNimbyStatus", (_event, newStatus) => {
   setNimbyValue(newStatus)

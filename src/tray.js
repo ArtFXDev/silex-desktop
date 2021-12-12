@@ -1,6 +1,6 @@
 const { app, Menu, Tray } = require("electron");
 const path = require("path");
-const mainWindow = require("./mainWindow");
+const mainWindow = require("./windows/main");
 const store = require("./utils/store");
 const logger = require("./utils/logger");
 const { autoUpdater } = require("electron-updater");

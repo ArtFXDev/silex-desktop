@@ -1,5 +1,5 @@
 const { app, ipcMain } = require("electron");
-const { mainWindow } = require("../mainWindow");
+const { mainWindow } = require("../windows/main");
 
 ipcMain.on("bringWindowToFront", () => {
   if (process.platform === "darwin") {
