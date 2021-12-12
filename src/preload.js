@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld("electron", {
       "setNimbyStatus",
       "setNimbyAutoMode",
       "killAllActiveTasksOnBlade",
+      "openFolderOrFile",
     ];
 
     if (validChannels.includes(channel)) {
