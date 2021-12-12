@@ -35,7 +35,6 @@ process.on("uncaughtException", function (error) {
  * Called when the electron process is ready
  */
 app.whenReady().then(() => {
-  // Make sure the store gets written
   restoreStore();
   persistStore();
 

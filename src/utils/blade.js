@@ -8,7 +8,15 @@ const BLADE_URL = "http://localhost:9005";
  * Returns a promise with the blade status
  */
 async function getBladeStatus() {
-  const response = await axios.get(`${BLADE_URL}/blade/status`);
+  let response;
+
+  try {
+    response = await axios.get(`${BLADE_URL}/blade/status`);
+  } catch (err) {
+    logger.warn("Tractor blade is not running...");
+    return;
+  }
+
   response.data.nimbyON = !(response.data.nimby === "None");
   return response;
 }
