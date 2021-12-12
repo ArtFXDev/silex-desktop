@@ -1,5 +1,6 @@
 const { BrowserWindow, app } = require("electron");
 const path = require("path");
+const logger = require("../../utils/logger");
 const store = require("../../utils/store");
 
 // The main window is singleton-like
@@ -86,6 +87,7 @@ function getSilexFrontUrl() {
  */
 function loadSilexFrontUrl() {
   const url = getSilexFrontUrl();
+  logger.debug(`Loading front url: ${url}`);
   mainWindow.loadURL(url);
 }
 
