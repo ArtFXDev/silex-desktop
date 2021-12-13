@@ -1,4 +1,4 @@
-const { mainWindow } = require("../mainWindow");
+const { mainWindow } = require("../windows/main");
 const {
   getBladeStatus,
   setNimbyValue,
@@ -45,32 +45,31 @@ function sendBladeStatusToFront() {
 }
 
 function checkForNimbyAutoMode() {
-  logger.info("[NIMBY] Checking for auto mode...");
+  logger.debug("[NIMBY] Checking for auto mode...");
   const hour = new Date().getHours();
 
   if (!store.instance.data.nimbyAutoMode && hour >= 19 && hour <= 8) {
-    logger.info("[NIMBY] Switching to auto mode");
     setNimbyAutoMode(true);
   }
 }
 
 function isUserActive() {
   const idleTime = powerMonitor.getSystemIdleTime();
-  logger.info(`[NIMBY] idleTime: ${idleTime}`);
+  logger.debug(`[NIMBY] idleTime: ${idleTime}`);
   return idleTime < 40;
 }
 
 async function checkCPUUsage() {
   return new Promise((resolve) => {
     os.cpuUsage((cpu) => {
-      logger.info("[NIMBY] CPU : " + Math.round(cpu * 100) + "%");
+      logger.debug("[NIMBY] CPU : " + Math.round(cpu * 100) + "%");
       resolve(Math.round(cpu * 100) < 50);
     });
   });
 }
 
 function checkForRunningProcesses() {
-  logger.info("[NIMBY] Check for running rocesses ...");
+  logger.debug("[NIMBY] Check for running rocesses ...");
 
   findProcess("name", "").then((processes) => {
     let processFound = false;
@@ -79,7 +78,7 @@ function checkForRunningProcesses() {
       const processName = path.parse(process.name).name;
 
       if (CONFIG.softwares.includes(processName)) {
-        logger.info(
+        logger.debug(
           `[NIMBY] Process ${processName} is running, switching to Nimby ON`
         );
         processFound = true;
@@ -98,7 +97,7 @@ function checkForRunningProcesses() {
 
 function checkIfUsed() {
   if (isUserActive()) {
-    logger.info("[NIMBY] User is active");
+    logger.debug("[NIMBY] User is active");
 
     getBladeStatus().then((response) => {
       if (response.data.nimby === "None") {
@@ -115,22 +114,22 @@ function checkIfUsed() {
 
   // Check if we check the process (day) or only the resource (night)
   if (hour >= 19 && hour <= 8) {
-    logger.info("[NIMBY] Running in night mode");
+    logger.debug("[NIMBY] Running in night mode");
 
     // NIGHT MODE
     checkCPUUsage().then((lowUsage) => {
       if (lowUsage) {
-        logger.info("[NIMBY] Your pc is not used, set nimby OFF");
+        logger.debug("[NIMBY] Your pc is not used, set nimby OFF");
         setNimbyValue(false);
       } else {
         // TODO else display message
-        logger.info("[NIMBY] Your have high cpu usage, let nimby ON");
+        logger.debug("[NIMBY] Your have high cpu usage, let nimby ON");
         setNimbyValue(true);
       }
     });
   } else {
     // DAY MODE
-    logger.info("[NIMBY] Running in day mode");
+    logger.debug("[NIMBY] Running in day mode");
     checkForRunningProcesses();
   }
 }

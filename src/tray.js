@@ -1,22 +1,20 @@
 const { app, Menu, Tray } = require("electron");
 const path = require("path");
-const mainWindow = require("./mainWindow");
+const mainWindow = require("./windows/main");
 const store = require("./utils/store");
 const logger = require("./utils/logger");
 const { autoUpdater } = require("electron-updater");
 const { persistStore } = require("./utils/store/persistence");
 const blade = require("./utils/blade");
+const silexSocketService = require("@artfxdev/silex-socket-service");
 
-let tray;
 const IMAGES_DIR = path.join(__dirname, "assets", "images");
+let tray;
 
 /**
- * Updates the ray icon with the nimby status (green is on and red is off)
+ * Sets the front mode to either prod, beta or dev
+ * It reloads the cache and update the store
  */
-function updateTrayIcon(nimbyON) {
-  tray.setImage(path.join(IMAGES_DIR, `256x256${nimbyON ? "" : "_off"}.png`));
-}
-
 function setFrontMode(mode) {
   store.instance.data.frontMode = mode;
   persistStore();
@@ -29,10 +27,27 @@ function setFrontMode(mode) {
 }
 
 /**
- * Add the tray menu (app icon in task bar)
+ * Same for the rez packages but they are stored in the socket service library
+ */
+function setRezPackagesMode(mode) {
+  silexSocketService.store.instance.data.rezPackagesMode = mode;
+  silexSocketService.persistStore();
+}
+
+/**
+ * Updates the tray icon with the nimby status (green is on and red is off)
+ */
+function updateTrayIcon(nimbyON) {
+  tray.setImage(path.join(IMAGES_DIR, `256x256${nimbyON ? "" : "_off"}.png`));
+}
+
+/**
+ * Builds the tray menu
  */
 function updateTrayMenu(nimbyON = false) {
   updateTrayIcon(nimbyON);
+
+  const possibleModes = ["prod", "beta", "dev"];
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -55,25 +70,26 @@ function updateTrayMenu(nimbyON = false) {
     },
     { type: "separator" },
     {
-      label: "Mode",
+      label: "Advanced",
       submenu: [
         {
-          label: "prod",
-          type: "radio",
-          checked: store.instance.data.frontMode === "prod",
-          click: () => setFrontMode("prod"),
+          label: "front-end mode",
+          submenu: possibleModes.map((mode) => ({
+            label: mode,
+            type: "radio",
+            checked: store.instance.data.frontMode === mode,
+            click: () => setFrontMode(mode),
+          })),
         },
         {
-          label: "beta",
-          type: "radio",
-          checked: store.instance.data.frontMode === "beta",
-          click: () => setFrontMode("beta"),
-        },
-        {
-          label: "dev",
-          type: "radio",
-          checked: store.instance.data.frontMode === "dev",
-          click: () => setFrontMode("dev"),
+          label: "Rez packages mode",
+          submenu: possibleModes.map((mode) => ({
+            label: mode,
+            type: "radio",
+            checked:
+              silexSocketService.store.instance.data.rezPackagesMode === mode,
+            click: () => setRezPackagesMode(mode),
+          })),
         },
       ],
     },
@@ -88,18 +104,24 @@ function updateTrayMenu(nimbyON = false) {
     },
   ]);
 
+  // Apply the menu to the tray
   tray.setContextMenu(contextMenu);
 }
 
+/**
+ * Initializes the tray menu
+ */
 function initializeTray() {
-  // Create tray menu and window
   tray = new Tray(path.join(IMAGES_DIR, "256x256.png"));
-  tray.on("click", mainWindow.openMainWindow);
-  tray.setToolTip("Silex pipeline app");
 
+  tray.on("click", mainWindow.openMainWindow);
+  tray.setToolTip("Silex desktop");
+
+  // Update the tray icon with the blade status
   blade.getBladeStatus().then((response) => {
     updateTrayMenu(response.data.nimbyON);
   });
+
   updateTrayMenu();
 }
 

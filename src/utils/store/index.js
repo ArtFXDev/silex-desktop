@@ -1,11 +1,11 @@
 /**
- * The store is used as centralized place for data in the library.
+ * The store is used as centralized place for data for the whole application
  */
 const store = {
   /** Auto mode value for the Nimby */
   nimbyAutoMode: true,
 
-  /** Dev, prod or beta mode, choosing the silex front url */
+  /** Switch between front-end versions (prod, beta or dev) */
   frontMode: "prod",
 };
 

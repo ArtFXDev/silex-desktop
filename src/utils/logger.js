@@ -12,7 +12,7 @@ const isInDev = process.env.NODE_ENV === "development";
 
 const logger = pino(
   {
-    level: isInDev ? "debug" : process.env.LOG_LEVEL || "warn",
+    level: process.env.LOG_LEVEL || (isInDev ? "debug" : "info"),
     prettyPrint: true,
     colorize: isInDev,
     translateTime: true,
