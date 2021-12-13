@@ -54,7 +54,7 @@ function createMainWindow(hidden = false) {
   mainWindow.webContents.on("did-fail-load", () => {
     mainWindow.loadURL(
       path.join("file:/", __dirname, "failed-loading.html") +
-        `?SILEX_FRONT_URL=${frontUrl}`
+        `?SILEX_FRONT_URL=${getSilexFrontUrl()}`
     );
   });
 
@@ -65,21 +65,15 @@ function createMainWindow(hidden = false) {
  * Returns the
  */
 function getSilexFrontUrl() {
-  let silexFrontUrl;
-
   switch (store.instance.data.frontMode) {
     case "beta":
-      silexFrontUrl = process.env.SILEX_FRONT_URL.replace("prod", "preprod");
-      break;
+      return process.env.SILEX_FRONT_URL.replace("prod", "preprod");
     case "dev":
-      silexFrontUrl = "http://localhost:3000";
-      break;
+      return "http://localhost:3000";
     default:
       // prod
-      silexFrontUrl = process.env.SILEX_FRONT_URL;
+      return process.env.SILEX_FRONT_URL;
   }
-
-  return silexFrontUrl;
 }
 
 /**
