@@ -32,6 +32,7 @@ function setFrontMode(mode) {
 function setRezPackagesMode(mode) {
   silexSocketService.store.instance.data.rezPackagesMode = mode;
   silexSocketService.persistStore();
+  mainWindow.setTitleVersion();
 }
 
 /**
