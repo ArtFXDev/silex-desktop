@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, protocol } = require("electron");
 const socketServer = require("@artfxdev/silex-socket-service");
 const mainWindow = require("./windows/main");
 const AutoLaunch = require("auto-launch");
@@ -39,6 +39,14 @@ app.whenReady().then(() => {
   persistStore();
 
   initializeTray();
+
+  // Create a custom file protocol to bypass the file:// protection
+  // See: https://www.electronjs.org/docs/latest/api/protocol#protocolregisterfileprotocolscheme-handler-completion
+  // It allows the front-end to display images that are local
+  protocol.registerFileProtocol("local", (request, callback) => {
+    const url = request.url.slice(7);
+    callback({ path: url });
+  });
 
   // If using the --hidden argument hide the window on startup
   mainWindow.createMainWindow(process.argv.includes("--hidden"));
