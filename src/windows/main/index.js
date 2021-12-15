@@ -2,6 +2,7 @@ const { BrowserWindow, app } = require("electron");
 const path = require("path");
 const logger = require("../../utils/logger");
 const store = require("../../utils/store");
+const silexSocketService = require("@artfxdev/silex-socket-service");
 
 // The main window is singleton-like
 let mainWindow = null;
@@ -83,6 +84,7 @@ function loadSilexFrontUrl() {
   const url = getSilexFrontUrl();
   logger.debug(`Loading front url: ${url}`);
   mainWindow.loadURL(url);
+  setTitleVersion();
 }
 
 /**
@@ -101,21 +103,19 @@ function openMainWindow() {
  * Sets the title of the window to have the package version
  */
 function setTitleVersion() {
-  let { currentVersion } = "";
-
-  if (process.env.NODE_ENV === "development") {
-    currentVersion = require("../../../package.json").version;
-  } else {
-    currentVersion = app.getVersion();
-  }
+  const desktopVersion =
+    process.env.NODE_ENV === "development"
+      ? require("../../../package.json").version
+      : app.getVersion();
 
   mainWindow.setTitle(
-    `Silex v${currentVersion} (${store.instance.data.frontMode})`
+    `Silex v${desktopVersion} [front-${store.instance.data.frontMode}, rez-${silexSocketService.store.instance.data.rezPackagesMode}]`
   );
 }
 
 module.exports = {
   mainWindow,
+  setTitleVersion,
   createMainWindow,
   openMainWindow,
   loadSilexFrontUrl,
