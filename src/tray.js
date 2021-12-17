@@ -7,6 +7,7 @@ const { autoUpdater } = require("electron-updater");
 const { persistStore } = require("./utils/store/persistence");
 const blade = require("./utils/blade");
 const silexSocketService = require("@artfxdev/silex-socket-service");
+const { setLogLevel } = require("./utils/settings");
 
 const IMAGES_DIR = path.join(__dirname, "assets", "images");
 let tray;
@@ -90,6 +91,15 @@ function updateTrayMenu(nimbyON = false) {
             checked:
               silexSocketService.store.instance.data.rezPackagesMode === mode,
             click: () => setRezPackagesMode(mode),
+          })),
+        },
+        {
+          label: "Log level",
+          submenu: ["WARNING", "INFO", "DEBUG"].map((logLevel) => ({
+            label: logLevel,
+            type: "radio",
+            checked: store.instance.data.logLevel === logLevel,
+            click: () => setLogLevel(logLevel),
           })),
         },
       ],

@@ -103,10 +103,7 @@ function openMainWindow() {
  * Sets the title of the window to have the package version
  */
 function setTitleVersion() {
-  const desktopVersion =
-    process.env.NODE_ENV === "development"
-      ? require("../../../package.json").version
-      : app.getVersion();
+  const desktopVersion = require("../../../package.json").version;
 
   mainWindow.setTitle(
     `Silex v${desktopVersion} [front-${store.instance.data.frontMode}, rez-${silexSocketService.store.instance.data.rezPackagesMode}]`
