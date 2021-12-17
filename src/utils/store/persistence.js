@@ -31,7 +31,8 @@ const restoreStore = () => {
     store.instance.data = merge(store.instance.data, JSON.parse(rawdata));
     logger.info(`Loaded store from ${storeFile}`);
   } catch (err) {
-    logger.error(`Error when reading back the store: ${err}`);
+    logger.warn(`The store file ${storeFile} doesn't exist: ${err}`);
+    persistStore();
   }
 };
 

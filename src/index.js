@@ -1,13 +1,15 @@
+const store = require("./utils/store");
+const { restoreStore } = require("./utils/store/persistence");
 const { app, BrowserWindow, protocol } = require("electron");
-const socketServer = require("@artfxdev/silex-socket-service");
+const silexSocketService = require("@artfxdev/silex-socket-service");
 const mainWindow = require("./windows/main");
 const AutoLaunch = require("auto-launch");
-const { restoreStore, persistStore } = require("./utils/store/persistence");
 const { initializeTray } = require("./tray");
 const { autoUpdater } = require("electron-updater");
 const cron = require("node-cron");
 const logger = require("./utils/logger");
 const updateWindow = require("./windows/update");
+const { setLogLevel } = require("./utils/settings");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -31,13 +33,22 @@ process.on("uncaughtException", function (error) {
   logger.error(error);
 });
 
+function initialize() {
+  // Initialize socket service
+  silexSocketService.initialize();
+
+  // Before any code restore the store
+  restoreStore();
+
+  // Initialize the log level
+  setLogLevel(store.instance.data.logLevel);
+}
+
 /**
  * Called when the electron process is ready
  */
 app.whenReady().then(() => {
-  restoreStore();
-  persistStore();
-
+  initialize();
   initializeTray();
 
   // Create a custom file protocol to bypass the file:// protection
@@ -83,7 +94,7 @@ app.whenReady().then(() => {
   require("./utils/nimby").startNimbyEventLoop();
 
   // Run the socket server
-  socketServer.run();
+  silexSocketService.run();
 
   // Specific to macos
   // See: https://www.electronjs.org/docs/latest/api/app#event-activate-macos
