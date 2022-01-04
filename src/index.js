@@ -66,9 +66,16 @@ app.whenReady().then(() => {
     logger.error(`Auto updater error: ${err}`);
   });
 
-  cron.schedule("0 7 * * *", () => {
+  cron.schedule("* * * * *", () => {
     logger.info("Daily checking for releases...");
     autoUpdater.checkForUpdatesAndNotify();
+
+    // Clear the cache so we refresh the single page
+    mainWindow.mainWindow.webContents.session.clearCache(() =>
+      logger.info("Cleared window cache")
+    );
+
+    mainWindow.loadSilexFrontUrl();
   });
 
   autoUpdater.on("update-available", () => {
