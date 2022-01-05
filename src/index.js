@@ -66,7 +66,7 @@ app.whenReady().then(() => {
     logger.error(`Auto updater error: ${err}`);
   });
 
-  cron.schedule("* * * * *", () => {
+  cron.schedule("0 7 * * *", () => {
     logger.info("Daily checking for releases...");
     autoUpdater.checkForUpdatesAndNotify();
 
