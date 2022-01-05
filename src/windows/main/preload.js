@@ -1,5 +1,21 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
+const validSendChannels = [
+  "openSilexFront",
+  "bringWindowToFront",
+  "restartApp",
+  "closeSilexUpdate",
+  "updateDownloaded",
+  "setNimbyStatus",
+  "setNimbyAutoMode",
+  "killAllActiveTasksOnBlade",
+  "openPath",
+
+  "mkdir",
+];
+
+const validSendSyncChannels = ["pathExists"];
+
 /**
  * Exposing Node API methods to the renderer process (front)
  * For more information see :
@@ -9,21 +25,15 @@ const { contextBridge, ipcRenderer } = require("electron");
  */
 contextBridge.exposeInMainWorld("electron", {
   send: (channel, data) => {
-    // whitelist channels
-    let validChannels = [
-      "openSilexFront",
-      "bringWindowToFront",
-      "restartApp",
-      "closeSilexUpdate",
-      "updateDownloaded",
-      "setNimbyStatus",
-      "setNimbyAutoMode",
-      "killAllActiveTasksOnBlade",
-      "openFolderOrFile",
-    ];
-
-    if (validChannels.includes(channel)) {
-      ipcRenderer.send(channel, data);
+    if (validSendChannels.includes(channel)) {
+      return ipcRenderer.send(channel, data);
+    } else {
+      throw new Error("channel is not exposed from Electron");
+    }
+  },
+  sendSync: (channel, data) => {
+    if (validSendSyncChannels.includes(channel)) {
+      return ipcRenderer.sendSync(channel, data);
     } else {
       throw new Error("channel is not exposed from Electron");
     }
