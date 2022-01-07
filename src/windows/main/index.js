@@ -21,6 +21,7 @@ function createMainWindow(hidden = false) {
     icon: `${__dirname}/../../assets/images/256x256.png`,
     webPreferences: {
       nodeIntegration: false,
+      webviewTag: true,
       contextIsolation: true,
       enableRemoteModule: false,
       sandbox: true,
