@@ -21,6 +21,7 @@ function createMainWindow(hidden = false) {
     icon: `${__dirname}/../../assets/images/256x256.png`,
     webPreferences: {
       nodeIntegration: false,
+      webviewTag: true,
       contextIsolation: true,
       enableRemoteModule: false,
       sandbox: true,
@@ -103,10 +104,7 @@ function openMainWindow() {
  * Sets the title of the window to have the package version
  */
 function setTitleVersion() {
-  const desktopVersion =
-    process.env.NODE_ENV === "development"
-      ? require("../../../package.json").version
-      : app.getVersion();
+  const desktopVersion = require("../../../package.json").version;
 
   mainWindow.setTitle(
     `Silex v${desktopVersion} [front-${store.instance.data.frontMode}, rez-${silexSocketService.store.instance.data.rezPackagesMode}]`
