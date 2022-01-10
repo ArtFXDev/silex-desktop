@@ -38,7 +38,7 @@
     "lint": "eslint --ext js ."
   },
   "dependencies": {
-    "@artfxdev/silex-socket-service": "1.4.13",
+    "@artfxdev/silex-socket-service": "1.5.1",
     "auto-launch": "^5.0.5",
     "axios": "^0.24.0",
     "deepmerge": "^4.2.2",
