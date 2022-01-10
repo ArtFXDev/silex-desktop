@@ -7,6 +7,8 @@ const store = {
 
   /** Switch between front-end versions (prod, beta or dev) */
   frontMode: "prod",
+
+  logLevel: "WARNING",
 };
 
 // ----------------------------------------------------
