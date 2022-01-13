@@ -1,6 +1,6 @@
 const store = require("./utils/store");
 const { restoreStore } = require("./utils/store/persistence");
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, Notification } = require("electron");
 const silexSocketService = require("@artfxdev/silex-socket-service");
 const mainWindow = require("./windows/main");
 const AutoLaunch = require("auto-launch");
@@ -80,6 +80,15 @@ app.whenReady().then(() => {
 
   autoUpdater.on("update-available", () => {
     logger.info("Update available");
+    new Notification({
+      title: "Silex",
+      body: "Found a new version, downloading...",
+    });
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    logger.error("not available");
+    new Notification({ title: "Silex", body: "Silex is up to date!" });
   });
 
   autoUpdater.on("update-downloaded", () => {

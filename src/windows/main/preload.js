@@ -10,8 +10,8 @@ const validSendChannels = [
   "setNimbyAutoMode",
   "killAllActiveTasksOnBlade",
   "openPath",
-
   "mkdir",
+  "clipboardWriteText",
 ];
 
 const validSendSyncChannels = ["pathExists"];

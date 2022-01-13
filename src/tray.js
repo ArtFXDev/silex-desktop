@@ -1,4 +1,4 @@
-const { app, Menu, Tray } = require("electron");
+const { app, Menu, Tray, Notification } = require("electron");
 const path = require("path");
 const mainWindow = require("./windows/main");
 const store = require("./utils/store");
@@ -67,6 +67,10 @@ function updateTrayMenu(nimbyON = false) {
       label: "Check for Updates...",
       click: () => {
         logger.info("Checking for updates...");
+        new Notification({
+          title: "Silex",
+          body: "Checking for updates...",
+        }).show();
         autoUpdater.checkForUpdatesAndNotify();
       },
     },
@@ -75,7 +79,7 @@ function updateTrayMenu(nimbyON = false) {
       label: "Advanced",
       submenu: [
         {
-          label: "front-end mode",
+          label: "UI mode",
           submenu: possibleModes.map((mode) => ({
             label: mode,
             type: "radio",
@@ -84,7 +88,7 @@ function updateTrayMenu(nimbyON = false) {
           })),
         },
         {
-          label: "Rez packages mode",
+          label: "Python mode",
           submenu: possibleModes.map((mode) => ({
             label: mode,
             type: "radio",
