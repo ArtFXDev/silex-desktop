@@ -1,4 +1,4 @@
-const { ipcMain, shell } = require("electron");
+const { ipcMain, shell, clipboard } = require("electron");
 const fs = require("fs");
 
 ipcMain.on("openSilexFront", () => {
@@ -15,4 +15,8 @@ ipcMain.on("pathExists", (event, path) => {
 
 ipcMain.on("mkdir", (event, path) => {
   fs.mkdirSync(path, { recursive: true });
+});
+
+ipcMain.on("clipboardWriteText", (event, text) => {
+  clipboard.writeText(text);
 });
