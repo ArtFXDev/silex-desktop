@@ -34,14 +34,16 @@ function setNimbyAutoMode(newMode) {
  * Queries the blade status and send it to the window process with IPC
  */
 function sendBladeStatusToFront() {
-  getBladeStatus().then((response) => {
-    if (mainWindow.isVisible()) {
-      mainWindow.webContents.send("bladeStatusUpdate", {
-        ...response.data,
-        nimbyAutoMode: store.instance.data.nimbyAutoMode,
-      });
-    }
-  });
+  getBladeStatus()
+    .then((response) => {
+      if (mainWindow.isVisible()) {
+        mainWindow.webContents.send("bladeStatusUpdate", {
+          ...response.data,
+          nimbyAutoMode: store.instance.data.nimbyAutoMode,
+        });
+      }
+    })
+    .catch((err) => logger.debug(err.message));
 }
 
 function checkForNimbyAutoMode() {
@@ -85,11 +87,13 @@ function checkForRunningProcesses() {
       }
     }
 
-    getBladeStatus().then((response) => {
-      const nimbyON = response.data.nimby !== "None";
-      if (!nimbyON && processFound) setNimbyValue(true);
-      if (nimbyON && !processFound) setNimbyValue(false);
-    });
+    getBladeStatus()
+      .then((response) => {
+        const nimbyON = response.data.nimby !== "None";
+        if (!nimbyON && processFound) setNimbyValue(true);
+        if (nimbyON && !processFound) setNimbyValue(false);
+      })
+      .catch((err) => logger.debug(err.message));
 
     setNimbyValue(processFound);
   });
@@ -99,13 +103,15 @@ function checkIfUsed() {
   if (isUserActive()) {
     logger.debug("[NIMBY] User is active");
 
-    getBladeStatus().then((response) => {
-      if (response.data.nimby === "None") {
-        setNimbyValue(true).then(() =>
-          killRunningTasksOnBlade(response.data.hnm)
-        );
-      }
-    });
+    getBladeStatus()
+      .then((response) => {
+        if (response.data.nimby === "None") {
+          setNimbyValue(true).then(() =>
+            killRunningTasksOnBlade(response.data.hnm)
+          );
+        }
+      })
+      .catch((err) => logger.debug(err.message));
 
     return;
   }

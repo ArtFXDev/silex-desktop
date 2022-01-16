@@ -143,9 +143,12 @@ function initializeTray() {
   tray.setToolTip("Silex desktop");
 
   // Update the tray icon with the blade status
-  blade.getBladeStatus().then((response) => {
-    updateTrayMenu(response.data.nimbyON);
-  });
+  blade
+    .getBladeStatus()
+    .then((response) => {
+      updateTrayMenu(response.data.nimbyON);
+    })
+    .catch((err) => logger.debug(err.message));
 
   updateTrayMenu();
 }
