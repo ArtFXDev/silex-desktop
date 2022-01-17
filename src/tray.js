@@ -106,6 +106,16 @@ function updateTrayMenu(nimbyON = false) {
             click: () => setLogLevel(logLevel),
           })),
         },
+        {
+          label: "Update threshold",
+          submenu: [0, 5, 10, 100, 500, 2000].map((threshold) => ({
+            label: `${threshold}ms`,
+            type: "radio",
+            checked:
+              parseInt(process.env.SILEX_UPDATE_THRESHOLD || 10) === threshold,
+            click: () => (process.env.SILEX_UPDATE_THRESHOLD = threshold),
+          })),
+        },
       ],
     },
     { type: "separator" },
