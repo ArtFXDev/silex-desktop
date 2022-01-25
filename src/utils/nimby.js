@@ -21,7 +21,6 @@ function setNimbyAutoMode(newMode) {
   if (newMode) {
     store.instance.data.nimbyAutoMode = true;
     triggerAutoInterval();
-    checkIfUsed();
   } else {
     store.instance.data.nimbyAutoMode = false;
     clearInterval(autoInterval);
@@ -50,7 +49,7 @@ function checkForNimbyAutoMode() {
   logger.debug("[NIMBY] Checking for auto mode...");
   const hour = new Date().getHours();
 
-  if (!store.instance.data.nimbyAutoMode && hour >= 19 && hour <= 8) {
+  if (!store.instance.data.nimbyAutoMode && (hour >= 19 || hour <= 8)) {
     setNimbyAutoMode(true);
   }
 }
@@ -58,7 +57,7 @@ function checkForNimbyAutoMode() {
 function isUserActive() {
   const idleTime = powerMonitor.getSystemIdleTime();
   logger.debug(`[NIMBY] idleTime: ${idleTime}`);
-  return idleTime < 40;
+  return idleTime < 60;
 }
 
 async function checkCPUUsage() {
@@ -119,7 +118,7 @@ function checkIfUsed() {
   const hour = new Date().getHours();
 
   // Check if we check the process (day) or only the resource (night)
-  if (hour >= 19 && hour <= 8) {
+  if (hour >= 19 || hour <= 8) {
     logger.debug("[NIMBY] Running in night mode");
 
     // NIGHT MODE
@@ -144,7 +143,7 @@ function checkIfUsed() {
  * Starts the interval when in auto mode
  */
 function triggerAutoInterval() {
-  autoInterval = setInterval(checkIfUsed, 60000 * 15);
+  autoInterval = setInterval(checkIfUsed, 60000 * 5);
 }
 
 function startNimbyEventLoop() {
@@ -152,7 +151,7 @@ function startNimbyEventLoop() {
   setInterval(sendBladeStatusToFront, 4000);
 
   // Switch to auto mode after a certain hour
-  setInterval(checkForNimbyAutoMode, 60000 * 10);
+  setInterval(checkForNimbyAutoMode, 60000 * 5);
 
   // By default it's in auto mode
   if (store.instance.data.nimbyAutoMode) triggerAutoInterval();
