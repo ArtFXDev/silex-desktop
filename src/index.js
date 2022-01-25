@@ -107,6 +107,7 @@ app.whenReady().then(() => {
   require("./ipc");
 
   // Start Nimby monitoring
+  logger.info("Starting NIMBY event loop...");
   require("./utils/nimby").startNimbyEventLoop();
 
   // Run the socket server
