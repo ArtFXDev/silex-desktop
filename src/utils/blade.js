@@ -47,9 +47,16 @@ async function killRunningTasksOnBlade(hnm) {
   );
 
   if (response_1.data.rc === 0) {
-    return axios.get(
+    await axios.get(
       `http://tractor/Tractor/queue?q=ejectall&blade=${hnm}&tsid=${response_1.data.tsid}`
     );
+
+    // Kill all running jobs with special service running
+    const status = await getBladeStatus();
+
+    for (const process of status.data.pids) {
+      await axios.post(`http://localhost:5119/kill/${process.pid}`);
+    }
   } else {
     throw new Error("Can't login to Tractor with nimby account");
   }
