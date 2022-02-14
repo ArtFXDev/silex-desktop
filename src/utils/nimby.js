@@ -114,7 +114,7 @@ async function checkIfUsed() {
   const runningJobs = await getRunningJobs();
   if (runningJobs.length > 0) {
     logger.debug("[NIMBY] Job already running");
-    store.instance.data.nimbyStatus = `job ${runningJobs[0].jid} running by ${runningJobs[0].login}`;
+    store.instance.data.nimbyStatus = `job running: ${runningJobs[0].jid} (${runningJobs[0].login})`;
     return;
   }
   if (isUserActive()) {
