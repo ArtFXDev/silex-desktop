@@ -1,8 +1,6 @@
 const axios = require("axios").default;
 const logger = require("../utils/logger");
-const store = require("./store");
-const {persistStore} = require("./store/persistence");
-const {asciiToHexa} = require("../utils/string");
+const { asciiToHexa } = require("../utils/string");
 
 const BLADE_URL = "http://localhost:9005";
 
@@ -20,7 +18,7 @@ async function getBladeStatus() {
  * Sets the nimby status to ON or OFF. Returns a promise
  */
 async function setNimbyValue(newStatus) {
-  const {updateTrayMenu} = require("../tray");
+  const { updateTrayMenu } = require("../tray");
 
   logger.info(`[NIMBY] Setting Nimby value to ${newStatus}`);
 
