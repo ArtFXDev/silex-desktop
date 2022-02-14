@@ -1,17 +1,17 @@
-const { mainWindow } = require("../windows/main");
+const {mainWindow} = require("../windows/main");
 const {
   getBladeStatus,
   setNimbyValue,
   killRunningTasksOnBlade,
 } = require("./blade");
-const { powerMonitor } = require("electron");
+const {powerMonitor} = require("electron");
 const os = require("os-utils");
 const findProcess = require("find-process");
 const path = require("path");
 const CONFIG = require("../config/config.json");
 const logger = require("../utils/logger");
 const store = require("./store");
-const { persistStore } = require("./store/persistence");
+const {persistStore} = require("./store/persistence");
 
 let autoInterval = null;
 
@@ -57,7 +57,7 @@ function checkForNimbyAutoMode() {
 function isUserActive() {
   const idleTime = powerMonitor.getSystemIdleTime();
   logger.debug(`[NIMBY] idleTime: ${idleTime}`);
-  return idleTime < 60;
+  return idleTime < 600;
 }
 
 async function checkCPUUsage() {
@@ -98,7 +98,20 @@ function checkForRunningProcesses() {
   });
 }
 
-function checkIfUsed() {
+async function checkForRunningJobs() {
+  const bladeStatus = await getBladeStatus()
+  if (bladeStatus.data.pids.length > 0) {
+    return true;
+  }
+  return false;
+}
+
+async function checkIfUsed() {
+  console.log("CHECKING ACTIVE")
+  if (await checkForRunningJobs()) {
+    logger.debug("[NIMBY] Job already running");
+    return;
+  }
   if (isUserActive()) {
     logger.debug("[NIMBY] User is active");
 
