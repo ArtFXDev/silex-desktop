@@ -20,9 +20,15 @@ function setNimbyAutoMode(newMode) {
 
   if (newMode) {
     store.instance.data.nimbyAutoMode = true;
+    checkIfUsed();
     triggerAutoInterval();
   } else {
     store.instance.data.nimbyAutoMode = false;
+    getBladeStatus().then((response) => {
+      store.instance.data.nimbyStatus =
+        response.data.nimby !== "None" ? "on" : "off";
+      persistStore();
+    });
     clearInterval(autoInterval);
   }
 
@@ -99,18 +105,16 @@ function checkForRunningProcesses() {
   });
 }
 
-async function checkForRunningJobs() {
+async function getRunningJobs() {
   const bladeStatus = await getBladeStatus();
-  if (bladeStatus.data.pids.length > 0) {
-    return true;
-  }
-  return false;
+  return bladeStatus.data.pids;
 }
 
 async function checkIfUsed() {
-  if (await checkForRunningJobs()) {
+  const runningJobs = await getRunningJobs();
+  if (runningJobs.length > 0) {
     logger.debug("[NIMBY] Job already running");
-    store.instance.data.nimbyStatus = "job running";
+    store.instance.data.nimbyStatus = `job ${runningJobs[0].pid} running`;
     return;
   }
   if (isUserActive()) {
