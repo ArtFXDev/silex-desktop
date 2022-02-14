@@ -154,6 +154,10 @@ async function checkIfUsed() {
     logger.debug("[NIMBY] Running in day mode");
     checkForRunningProcesses();
   }
+
+  if (await getBladeStatus().data.nimby === "None") {
+    store.instance.data.nimbyStatus = "unused";
+  }
 }
 
 /**
