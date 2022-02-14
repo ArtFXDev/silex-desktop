@@ -83,6 +83,7 @@ function checkForRunningProcesses() {
           `[NIMBY] Process ${processName} is running, switching to Nimby ON`
         );
         processFound = true;
+        store.instance.data.nimbyStatus = `${processName} running`;
       }
     }
 
@@ -110,10 +111,12 @@ async function checkIfUsed() {
   console.log("CHECKING ACTIVE")
   if (await checkForRunningJobs()) {
     logger.debug("[NIMBY] Job already running");
+    store.instance.data.nimbyStatus = "job running";
     return;
   }
   if (isUserActive()) {
     logger.debug("[NIMBY] User is active");
+    store.instance.data.nimbyStatus = "user active";
 
     getBladeStatus()
       .then((response) => {
@@ -142,6 +145,7 @@ async function checkIfUsed() {
       } else {
         // TODO else display message
         logger.debug("[NIMBY] Your have high cpu usage, let nimby ON");
+        store.instance.data.nimbyStatus = "cpu active";
         setNimbyValue(true);
       }
     });
@@ -156,7 +160,10 @@ async function checkIfUsed() {
  * Starts the interval when in auto mode
  */
 function triggerAutoInterval() {
-  autoInterval = setInterval(checkIfUsed, 60000 * 5);
+  autoInterval = setInterval(() => {
+    checkIfUsed();
+    persistStore();
+  }, 60000 * 2);
 }
 
 function startNimbyEventLoop() {
@@ -164,7 +171,7 @@ function startNimbyEventLoop() {
   setInterval(sendBladeStatusToFront, 4000);
 
   // Switch to auto mode after a certain hour
-  setInterval(checkForNimbyAutoMode, 60000 * 5);
+  setInterval(checkForNimbyAutoMode, 60000 * 2);
 
   // By default it's in auto mode
   if (store.instance.data.nimbyAutoMode) triggerAutoInterval();
