@@ -108,7 +108,6 @@ async function checkForRunningJobs() {
 }
 
 async function checkIfUsed() {
-  console.log("CHECKING ACTIVE");
   if (await checkForRunningJobs()) {
     logger.debug("[NIMBY] Job already running");
     store.instance.data.nimbyStatus = "job running";
