@@ -36,6 +36,10 @@ process.on("uncaughtException", function (error) {
 function initialize() {
   // Initialize socket service
   silexSocketService.initialize();
+  // Add desktop to the socket service
+  silexSocketService.app.get("/desktop/status", (req, res) => {
+    res.json(store.instance.data);
+  });
 
   // Before any code restore the store
   restoreStore();
