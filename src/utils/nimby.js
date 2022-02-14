@@ -1,17 +1,17 @@
-const {mainWindow} = require("../windows/main");
+const { mainWindow } = require("../windows/main");
 const {
   getBladeStatus,
   setNimbyValue,
   killRunningTasksOnBlade,
 } = require("./blade");
-const {powerMonitor} = require("electron");
+const { powerMonitor } = require("electron");
 const os = require("os-utils");
 const findProcess = require("find-process");
 const path = require("path");
 const CONFIG = require("../config/config.json");
 const logger = require("../utils/logger");
 const store = require("./store");
-const {persistStore} = require("./store/persistence");
+const { persistStore } = require("./store/persistence");
 
 let autoInterval = null;
 
@@ -100,7 +100,7 @@ function checkForRunningProcesses() {
 }
 
 async function checkForRunningJobs() {
-  const bladeStatus = await getBladeStatus()
+  const bladeStatus = await getBladeStatus();
   if (bladeStatus.data.pids.length > 0) {
     return true;
   }
@@ -108,7 +108,7 @@ async function checkForRunningJobs() {
 }
 
 async function checkIfUsed() {
-  console.log("CHECKING ACTIVE")
+  console.log("CHECKING ACTIVE");
   if (await checkForRunningJobs()) {
     logger.debug("[NIMBY] Job already running");
     store.instance.data.nimbyStatus = "job running";
@@ -155,7 +155,7 @@ async function checkIfUsed() {
     checkForRunningProcesses();
   }
 
-  if (await getBladeStatus().data.nimby === "None") {
+  if ((await getBladeStatus().data.nimby) === "None") {
     store.instance.data.nimbyStatus = "unused";
   }
 }

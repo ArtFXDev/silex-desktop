@@ -1,15 +1,15 @@
 const store = require("./utils/store");
-const {restoreStore} = require("./utils/store/persistence");
-const {app, BrowserWindow, protocol, Notification} = require("electron");
+const { restoreStore } = require("./utils/store/persistence");
+const { app, BrowserWindow, protocol, Notification } = require("electron");
 const silexSocketService = require("@artfxdev/silex-socket-service");
 const mainWindow = require("./windows/main");
 const AutoLaunch = require("auto-launch");
-const {initializeTray} = require("./tray");
-const {autoUpdater} = require("electron-updater");
+const { initializeTray } = require("./tray");
+const { autoUpdater } = require("electron-updater");
 const cron = require("node-cron");
 const logger = require("./utils/logger");
 const updateWindow = require("./windows/update");
-const {setLogLevel} = require("./utils/settings");
+const { setLogLevel } = require("./utils/settings");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -39,7 +39,7 @@ function initialize() {
   // Add desktop to the socket service
   silexSocketService.app.get("/desktop/status", (req, res) => {
     res.json(store.instance.data);
-  })
+  });
 
   // Before any code restore the store
   restoreStore();
@@ -60,7 +60,7 @@ app.whenReady().then(() => {
   // It allows the front-end to display images that are local
   protocol.registerFileProtocol("local", (request, callback) => {
     const url = request.url.slice(7);
-    callback({path: url});
+    callback({ path: url });
   });
 
   // If using the --hidden argument hide the window on startup
@@ -92,7 +92,7 @@ app.whenReady().then(() => {
 
   autoUpdater.on("update-not-available", () => {
     logger.error("not available");
-    new Notification({title: "Silex", body: "Silex is up to date!"});
+    new Notification({ title: "Silex", body: "Silex is up to date!" });
   });
 
   autoUpdater.on("update-downloaded", () => {
