@@ -1,9 +1,5 @@
 const { mainWindow } = require("../windows/main");
-const {
-  getBladeStatus,
-  setNimbyValue,
-  killRunningTasksOnBlade,
-} = require("./blade");
+const { getBladeStatus, setNimbyValue } = require("./blade");
 const { powerMonitor } = require("electron");
 const os = require("os-utils");
 const findProcess = require("find-process");
@@ -13,22 +9,25 @@ const logger = require("../utils/logger");
 const store = require("./store");
 const { persistStore } = require("./store/persistence");
 
+// The auto mode interval
 let autoInterval = null;
 
+/**
+ * Set the nimby auto mode value. If set to true
+ */
 function setNimbyAutoMode(newMode) {
-  logger.info(`[NIMBY] Switching nimbyMode to: ${newMode ? "AUTO" : "MANUAL"}`);
-
   if (newMode) {
     store.instance.data.nimbyAutoMode = true;
     checkIfUsed();
     triggerAutoInterval();
   } else {
     store.instance.data.nimbyAutoMode = false;
+
     getBladeStatus().then((response) => {
-      store.instance.data.nimbyStatus =
-        response.data.nimby !== "None" ? "on" : "off";
-      persistStore();
+      store.instance.data.nimbyStatus = response.data.nimbyON ? "on" : "off";
     });
+
+    // Stop the auto mode loop
     clearInterval(autoInterval);
   }
 
@@ -51,114 +50,104 @@ function sendBladeStatusToFront() {
     .catch((err) => logger.debug(err.message));
 }
 
+/**
+ * The Auto mode is enabled after a certain hour in the afternoon
+ */
 function checkForNimbyAutoMode() {
   logger.debug("[NIMBY] Checking for auto mode...");
   const hour = new Date().getHours();
 
-  if (!store.instance.data.nimbyAutoMode && (hour >= 19 || hour <= 8)) {
+  const shouldGoAuto =
+    hour >= CONFIG.nimby.autoMode.startHour ||
+    hour <= CONFIG.nimby.autoMode.endHour;
+
+  if (!store.instance.data.nimbyAutoMode && shouldGoAuto) {
+    logger.debug(`[NIMBY] Auto mode activation because of ${hour}h`);
     setNimbyAutoMode(true);
   }
 }
 
+/**
+ * Returns true if a user was active recently
+ */
 function isUserActive() {
   const idleTime = powerMonitor.getSystemIdleTime();
-  logger.debug(`[NIMBY] idleTime: ${idleTime}`);
-  return idleTime < 600;
+  return idleTime < CONFIG.nimby.autoMode.maxUserIdleTime;
 }
 
-async function checkCPUUsage() {
+/**
+ * Returns the cpu usage in percent
+ */
+async function cpuUsage() {
   return new Promise((resolve) => {
     os.cpuUsage((cpu) => {
-      logger.debug("[NIMBY] CPU : " + Math.round(cpu * 100) + "%");
-      resolve(Math.round(cpu * 100) < 50);
+      logger.debug("[NIMBY] CPU: " + Math.round(cpu * 100) + "%");
+      resolve(Math.round(cpu * 100));
     });
   });
 }
 
-function checkForRunningProcesses() {
-  logger.debug("[NIMBY] Check for running rocesses ...");
+/**
+ * Returns true if any of the running processes are in the config blacklist
+ */
+async function checkForRunningProcesses() {
+  logger.debug("[NIMBY] Check for running processes ...");
 
-  findProcess("name", "").then((processes) => {
-    let processFound = false;
+  const processes = await findProcess("name", "");
 
-    for (const process of processes) {
-      const processName = path.parse(process.name).name;
+  for (const process of processes) {
+    const processName = path.parse(process.name).name;
 
-      if (CONFIG.softwares.includes(processName)) {
-        logger.debug(
-          `[NIMBY] Process ${processName} is running, switching to Nimby ON`
-        );
-        processFound = true;
-        store.instance.data.nimbyStatus = `${processName} running`;
-      }
+    if (CONFIG.nimby.autoMode.softwares.includes(processName)) {
+      return processName;
     }
+  }
 
-    getBladeStatus()
-      .then((response) => {
-        const nimbyON = response.data.nimby !== "None";
-        if (!nimbyON && processFound) setNimbyValue(true);
-        if (nimbyON && !processFound) setNimbyValue(false);
-      })
-      .catch((err) => logger.debug(err.message));
-
-    setNimbyValue(processFound);
-  });
+  return false;
 }
 
-async function getRunningJobs() {
-  const bladeStatus = await getBladeStatus();
-  return bladeStatus.data.pids;
-}
-
+/**
+ * Checks if the computer is used by someone and toggles the Nimby ON/OFF depending on that
+ * It checks the CPU usage and if there are any processes like Maya our Houdini running on the computer
+ */
 async function checkIfUsed() {
-  const runningJobs = await getRunningJobs();
+  const bladeStatus = (await getBladeStatus()).data;
+  const runningJobs = bladeStatus.pids;
+
+  // When a job is running we don't need to set the nimby value
   if (runningJobs.length > 0) {
-    logger.debug("[NIMBY] Job already running");
+    logger.debug("[NIMBY] A job is currently running");
     store.instance.data.nimbyStatus = `job running: ${runningJobs[0].jid} (${runningJobs[0].login})`;
     return;
   }
+
+  // Same when the user is active
   if (isUserActive()) {
     logger.debug("[NIMBY] User is active");
     store.instance.data.nimbyStatus = "user active";
-
-    getBladeStatus()
-      .then((response) => {
-        if (response.data.nimby === "None") {
-          setNimbyValue(true).then(() =>
-            killRunningTasksOnBlade(response.data.hnm)
-          );
-        }
-      })
-      .catch((err) => logger.debug(err.message));
-
+    if (!bladeStatus.nimbyON) setNimbyValue(true);
     return;
   }
 
-  const hour = new Date().getHours();
-
-  // Check if we check the process (day) or only the resource (night)
-  if (hour >= 19 || hour <= 8) {
-    logger.debug("[NIMBY] Running in night mode");
-
-    // NIGHT MODE
-    checkCPUUsage().then((lowUsage) => {
-      if (lowUsage) {
-        logger.debug("[NIMBY] Your pc is not used, set nimby OFF");
-        setNimbyValue(false);
-      } else {
-        // TODO else display message
-        logger.debug("[NIMBY] Your have high cpu usage, let nimby ON");
-        store.instance.data.nimbyStatus = "cpu active";
-        setNimbyValue(true);
-      }
-    });
-  } else {
-    // DAY MODE
-    logger.debug("[NIMBY] Running in day mode");
-    checkForRunningProcesses();
+  const cpuUse = await cpuUsage();
+  const cpuUsed = cpuUse > 50;
+  if (cpuUsed) {
+    logger.debug(`[NIMBY] CPU is active at ${cpuUse}%`);
+    store.instance.data.nimbyStatus = `CPU is active at ${cpuUse}%`;
   }
 
-  if ((await getBladeStatus().data.nimby) === "None") {
+  const runningProcess = await checkForRunningProcesses();
+  if (runningProcess) {
+    logger.debug(`[NIMBY] ${runningProcess} is running`);
+    store.instance.data.nimbyStatus = `${runningProcess} is running`;
+  }
+
+  // Set the nimby to ON if there's some activity on the computer
+  if (cpuUsed || runningProcess) {
+    if (!bladeStatus.nimbyON) setNimbyValue(true);
+  } else {
+    // Otherwise set it to OFF because it's unused
+    if (bladeStatus.nimbyON) setNimbyValue(false);
     store.instance.data.nimbyStatus = "unused";
   }
 }
@@ -173,6 +162,9 @@ function triggerAutoInterval() {
   }, 60000 * 2);
 }
 
+/**
+ * Starts the nimby event loop (auto mode)
+ */
 function startNimbyEventLoop() {
   // Sends a ping every X seconds to the frontend that updates the blade status
   setInterval(sendBladeStatusToFront, 4000);

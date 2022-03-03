@@ -21,19 +21,18 @@ ipcMain.on("setNimbyAutoMode", (_event, newMode) => {
 });
 
 ipcMain.on("killAllActiveTasksOnBlade", (_event, hnm) => {
-  // For tractor authentication see: https://rmanwiki.pixar.com/display/TRA/Login+Management
   killRunningTasksOnBlade(hnm)
     .then(() => {
       mainWindow.webContents.send("operationSuccess", {
         channel: "killAllActiveTasksOnBlade",
       });
     })
-    .catch((error) =>
+    .catch((error) => {
       mainWindow.webContents.send("operationError", {
         channel: "killAllActiveTasksOnBlade",
         error,
-      })
-    );
+      });
+    });
 });
 
 module.exports = { sendBladeStatusToFront };
