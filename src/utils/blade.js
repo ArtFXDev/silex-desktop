@@ -43,26 +43,33 @@ async function toggleNimby() {
   return await setNimbyValue(response.data.nimby === "None");
 }
 
+// For tractor authentication see: https://rmanwiki.pixar.com/display/TRA/Login+Management
 async function killRunningTasksOnBlade(hnm) {
-  const response = await axios.get("http://tractor/Tractor/monitor?q=gentoken");
+  // Kill all running jobs with special service running in admin
+  const status = await getBladeStatus();
+  let pid;
 
-  const challengeEncoded = asciiToHexa(response.data.challenge + "|");
+  try {
+    for (const process of status.data.pids) {
+      pid = process.pid;
+      logger.info(`Trying to kill process with pid: ${pid}...`);
+      await axios.post(`http://localhost:5119/kill/${process.pid}`);
+    }
+  } catch (err) {
+    throw Error(`Failed to kill process ${pid}`);
+  }
 
-  const response_1 = await axios.get(
+  const genToken = await axios.get("http://tractor/Tractor/monitor?q=gentoken");
+  const challengeEncoded = asciiToHexa(genToken.data.challenge + "|");
+
+  const tractorLogin = await axios.get(
     `http://tractor/Tractor/monitor?q=login&user=nimby&c=${challengeEncoded}`
   );
 
-  if (response_1.data.rc === 0) {
+  if (tractorLogin.data.rc === 0) {
     await axios.get(
-      `http://tractor/Tractor/queue?q=ejectall&blade=${hnm}&tsid=${response_1.data.tsid}`
+      `http://tractor/Tractor/queue?q=ejectall&blade=${hnm}&tsid=${tractorLogin.data.tsid}`
     );
-
-    // Kill all running jobs with special service running
-    const status = await getBladeStatus();
-
-    for (const process of status.data.pids) {
-      await axios.post(`http://localhost:5119/kill/${process.pid}`);
-    }
   } else {
     throw new Error("Can't login to Tractor with nimby account");
   }
