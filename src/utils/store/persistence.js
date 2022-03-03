@@ -16,7 +16,6 @@ const storeFile = path.join(
 const persistStore = () => {
   try {
     fs.writeFileSync(storeFile, JSON.stringify(store.instance.data));
-    logger.info(`Written store to ${storeFile}`);
   } catch (err) {
     logger.error(`Error writing store: ${err}`);
   }

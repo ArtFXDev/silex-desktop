@@ -1,5 +1,10 @@
 {
-    "softwares": [
+  "nimby": {
+    "autoMode": {
+      "startHour": 19,
+      "endHour": 8,
+      "maxUserIdleTime": 1200,
+      "softwares": [
         "3dsmax",
         "Adobe Premiere Pro",
         "AutopanoPro_x64",
@@ -24,6 +29,7 @@
         "Spine",
         "Substance Designer",
         "Substance Painter",
+        "Adobe Substance 3D Painter",
         "SynthEyes64",
         "TVPaint Animation 10 (32bits)",
         "Unity",
@@ -32,5 +38,7 @@
         "metashape",
         "wstart",
         "blender"
-    ]
+      ]
+    }
+  }
 }

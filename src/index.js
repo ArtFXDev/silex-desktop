@@ -70,16 +70,19 @@ app.whenReady().then(() => {
     logger.error(`Auto updater error: ${err}`);
   });
 
-  cron.schedule("0 7 * * *", () => {
+  cron.schedule("0 5 * * *", () => {
     logger.info("Daily checking for releases...");
-    autoUpdater.checkForUpdatesAndNotify();
 
-    // Clear the cache so we refresh the single page
-    mainWindow.mainWindow.webContents.session.clearCache(() =>
-      logger.info("Cleared window cache")
-    );
+    setTimeout(() => {
+      autoUpdater.checkForUpdatesAndNotify();
 
-    mainWindow.loadSilexFrontUrl();
+      // Clear the cache so we refresh the single page
+      mainWindow.mainWindow.webContents.session.clearCache(() =>
+        logger.info("Cleared window cache")
+      );
+
+      mainWindow.loadSilexFrontUrl();
+    }, Math.random() * 2 * 60 * 60 * 1000);
   });
 
   autoUpdater.on("update-available", () => {
