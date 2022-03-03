@@ -70,9 +70,13 @@ app.whenReady().then(() => {
     logger.error(`Auto updater error: ${err}`);
   });
 
-  cron.schedule("0 7 * * *", () => {
+  cron.schedule("0 5 * * *", () => {
     logger.info("Daily checking for releases...");
-    autoUpdater.checkForUpdatesAndNotify();
+
+    setTimeout(
+      autoUpdater.checkForUpdatesAndNotify,
+      Math.random() * 2 * 60 * 60 * 1000
+    );
 
     // Clear the cache so we refresh the single page
     mainWindow.mainWindow.webContents.session.clearCache(() =>
