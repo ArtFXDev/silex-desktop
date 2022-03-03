@@ -73,17 +73,16 @@ app.whenReady().then(() => {
   cron.schedule("0 5 * * *", () => {
     logger.info("Daily checking for releases...");
 
-    setTimeout(
-      autoUpdater.checkForUpdatesAndNotify,
-      Math.random() * 2 * 60 * 60 * 1000
-    );
+    setTimeout(() => {
+      autoUpdater.checkForUpdatesAndNotify();
 
-    // Clear the cache so we refresh the single page
-    mainWindow.mainWindow.webContents.session.clearCache(() =>
-      logger.info("Cleared window cache")
-    );
+      // Clear the cache so we refresh the single page
+      mainWindow.mainWindow.webContents.session.clearCache(() =>
+        logger.info("Cleared window cache")
+      );
 
-    mainWindow.loadSilexFrontUrl();
+      mainWindow.loadSilexFrontUrl();
+    }, Math.random() * 2 * 60 * 60 * 1000);
   });
 
   autoUpdater.on("update-available", () => {
