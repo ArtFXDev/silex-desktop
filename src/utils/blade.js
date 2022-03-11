@@ -44,7 +44,7 @@ async function toggleNimby() {
 }
 
 // For tractor authentication see: https://rmanwiki.pixar.com/display/TRA/Login+Management
-async function killRunningTasksOnBlade(hnm) {
+async function killRunningTasksOnBlade() {
   // Kill all running jobs with special service running in admin
   const status = await getBladeStatus();
   let pid;
@@ -67,11 +67,13 @@ async function killRunningTasksOnBlade(hnm) {
   );
 
   if (tractorLogin.data.rc === 0) {
-    await axios.get(
-      `http://tractor/Tractor/queue?q=ejectall&blade=${hnm}&tsid=${tractorLogin.data.tsid}`
-    );
+    for (const process of status.data.pids) {
+      await axios.get(
+        `http://tractor/Tractor/queue?q=jretry&jid=${process.jid}&tsubset=${process.tid}&tsid=${tractorLogin.data.tsid}`
+      );
+    }
   } else {
-    throw new Error("Can't login to Tractor with nimby account");
+    throw new Error("Failed to retry task");
   }
 }
 

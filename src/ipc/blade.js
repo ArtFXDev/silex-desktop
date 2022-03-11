@@ -20,8 +20,8 @@ ipcMain.on("setNimbyAutoMode", (_event, newMode) => {
   sendBladeStatusToFront();
 });
 
-ipcMain.on("killAllActiveTasksOnBlade", (_event, hnm) => {
-  killRunningTasksOnBlade(hnm)
+ipcMain.on("killAllActiveTasksOnBlade", () => {
+  killRunningTasksOnBlade()
     .then(() => {
       mainWindow.webContents.send("operationSuccess", {
         channel: "killAllActiveTasksOnBlade",
