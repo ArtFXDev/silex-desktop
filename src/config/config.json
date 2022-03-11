@@ -1,7 +1,7 @@
 {
   "nimby": {
     "autoMode": {
-      "startHour": 19,
+      "startHour": 18,
       "endHour": 8,
       "maxUserIdleTime": 1200,
       "softwares": [
