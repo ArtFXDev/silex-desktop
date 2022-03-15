@@ -1,4 +1,4 @@
-const store = require("./utils/store");
+const store = require("../utils/store");
 const currentProcesses = require("current-processes");
 
 function register_status(app) {
