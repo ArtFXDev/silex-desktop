@@ -618,7 +618,7 @@ async-exit-hook@^2.0.1:
   resolved "https://registry.yarnpkg.com/async-exit-hook/-/async-exit-hook-2.0.1.tgz#8bd8b024b0ec9b1c01cccb9af9db29bd717dfaf3"
   integrity sha512-NW2cX8m1Q7KPA7a5M2ULQeZ2wR5qI5PAbw5L0UOMxdioVk9PMZ0h1TmyZEkPYrCvYjDlFICusOu1dlEKAAeXBw==
 
-async@0.9.x:
+async@0.9.x, async@^0.9.0:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/async/-/async-0.9.2.tgz#aea74d5e61c1f899613bf64bda66d4c78f2fd17d"
   integrity sha1-rqdNXmHB+JlhO/ZL2mbUx48v0X0=
@@ -1159,6 +1159,19 @@ crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
+
+csv-parse@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-0.0.5.tgz#9b094ee3f03737fca1ac5300ae5ca4b1931b7b6e"
+  integrity sha1-mwlO4/A3N/yhrFMArlyksZMbe24=
+
+current-processes@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/current-processes/-/current-processes-0.2.1.tgz#e4a967146a10e7e66d24e7ba8a411a03ca81a5c4"
+  integrity sha1-5KlnFGoQ5+ZtJOe6ikEaA8qBpcQ=
+  dependencies:
+    async "^0.9.0"
+    csv-parse "0.0.5"
 
 dargs@^7.0.0:
   version "7.0.0"
