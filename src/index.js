@@ -7,7 +7,7 @@ const AutoLaunch = require("auto-launch");
 const { initializeTray } = require("./tray");
 const { autoUpdater } = require("electron-updater");
 const cron = require("node-cron");
-const register_routes = require("./routes/desktop");
+const registerRoutes = require("./routes/desktop");
 const logger = require("./utils/logger");
 const updateWindow = require("./windows/update");
 const { setLogLevel } = require("./utils/settings");
@@ -38,7 +38,7 @@ function initialize() {
   // Initialize socket service
   silexSocketService.initialize();
   // Add desktop to the socket service
-  register_routes(silexSocketService.app);
+  registerRoutes(silexSocketService.app);
 
   // Before any code restore the store
   restoreStore();
