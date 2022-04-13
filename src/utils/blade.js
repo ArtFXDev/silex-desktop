@@ -45,19 +45,18 @@ async function toggleNimby() {
 
 // For tractor authentication see: https://rmanwiki.pixar.com/display/TRA/Login+Management
 async function killRunningTasksOnBlade() {
-  // Kill all running jobs with special service running in admin
   const status = await getBladeStatus();
-  let pid;
+  // let pid;
 
-  try {
-    for (const process of status.data.pids) {
-      pid = process.pid;
-      logger.info(`Trying to kill process with pid: ${pid}...`);
-      await axios.post(`http://localhost:5119/kill/${process.pid}`);
-    }
-  } catch (err) {
-    throw Error(`Failed to kill process ${pid}`);
-  }
+  // try {
+  //   for (const process of status.data.pids) {
+  //     pid = process.pid;
+  //     logger.info(`Trying to kill process with pid: ${pid}...`);
+  //     await axios.post(`http://localhost:5119/kill/${process.pid}`);
+  //   }
+  // } catch (err) {
+  //   throw Error(`Failed to kill process ${pid}`);
+  // }
 
   const genToken = await axios.get("http://tractor/Tractor/monitor?q=gentoken");
   const challengeEncoded = asciiToHexa(genToken.data.challenge + "|");
