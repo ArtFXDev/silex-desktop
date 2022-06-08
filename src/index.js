@@ -17,7 +17,6 @@ const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
   app.quit();
-  return;
 }
 
 // Someone tried to run a second instance, we should focus our window.
