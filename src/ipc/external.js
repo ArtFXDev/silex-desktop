@@ -6,6 +6,11 @@ ipcMain.on("openSilexFront", () => {
 });
 
 ipcMain.on("openPath", (_event, path) => {
+  // Handle Windows paths
+  if (process.platform === "win32") {
+    path = path.replace(/\//g, "\\");
+  }
+
   shell.openPath(path);
 });
 

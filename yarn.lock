@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.1.1.tgz#9274ec7460652f9c632c59addf24efb1684ef876"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@artfxdev/silex-socket-service@1.5.6":
-  version "1.5.6"
-  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.5.6/b857c20268fecb83471b6bcf94de7362f80317008ab86e980fe6d20a49e06604#e078cc1a87592acf05ae23aea16686f248303eec"
-  integrity sha512-vRIWup4YVgyJQS7BGWYi2/4VcY1bITaBzQO4sLvd+6sy04IqacGr+mM7vKyyKiSnNnueFX2jGDvzAVf5s6xsuw==
+"@artfxdev/silex-socket-service@1.5.7":
+  version "1.5.7"
+  resolved "https://npm.pkg.github.com/download/@artfxdev/silex-socket-service/1.5.7/ac3115fbc263476d439f5492a2969bd6c41b62c6e6b61fd37607af622b9e4b8b#5f72ca7e2bf63301bb4f334baf22b98f209b2240"
+  integrity sha512-wbCRvu6lTLLagGe/xrtz7ykrYZC6yjB0Z6dfaldSgbCYxzeszLB1jmkL3DonTFzsMuAr+7HlUY324yyNfEnElQ==
   dependencies:
     axios "^0.24.0"
     cors "^2.8.5"
