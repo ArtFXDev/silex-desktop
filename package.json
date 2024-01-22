@@ -37,11 +37,13 @@
   },
   "dependencies": {
     "@artfxdev/silex-socket-service": "1.5.7",
+    "archiver": "^6.0.1",
     "auto-launch": "^5.0.5",
     "axios": "^0.24.0",
     "deepmerge": "^4.2.2",
     "electron-updater": "^4.3.9",
     "eslint-plugin-import": "^2.26.0",
+    "extract-zip": "^2.0.1",
     "find-process": "^1.4.5",
     "node-cron": "^3.0.0",
     "os-utils": "^0.0.14",

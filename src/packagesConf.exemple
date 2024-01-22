@@ -1,0 +1,18 @@
+// here we configure the path of the packages we want to synchronize
+
+const sourcePath ={
+    silex_houdini: "D:/dev_packages/internal/silex_houdini",
+    silex_maya: "D:/dev_packages/internal/silex_maya",
+    silex_nuke: "D:/dev_packages/internal/silex_nuke",
+    silex_client: "D:/dev_packages/internal/silex_client"
+}
+
+const dstPath ={
+    silex_houdini: "D:/rez/dev_packages/internal/silex_houdini",
+    silex_maya: "D:/rez/dev_packages/internal/silex_maya",
+    silex_nuke: "D:/rez/dev_packages/internal/silex_nuke",
+    silex_client: "D:/rez/dev_packages/internal/silex_client"
+
+}
+
+module.exports = {localPath , networkPath}

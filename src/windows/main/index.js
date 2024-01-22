@@ -71,7 +71,7 @@ function getSilexFrontUrl() {
     case "beta":
       return process.env.SILEX_FRONT_URL.replace("prod", "preprod");
     case "dev":
-      return "http://localhost:3000";
+      return "http://localhost:5173/";
     default:
       // prod
       return process.env.SILEX_FRONT_URL;

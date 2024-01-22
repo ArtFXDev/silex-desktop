@@ -11,6 +11,7 @@ const registerRoutes = require("./routes/desktop");
 const logger = require("./utils/logger");
 const updateWindow = require("./windows/update");
 const { setLogLevel } = require("./utils/settings");
+const { updatePackages } = require("./updateRezPackages");
 
 // Early exit to prevent the application to be opened twice
 const gotTheLock = app.requestSingleInstanceLock();
@@ -51,8 +52,16 @@ function initialize() {
  * Called when the electron process is ready
  */
 app.whenReady().then(() => {
+  updatePackages();
   initialize();
   initializeTray();
+
+  //check rez packages versions of silex_houdini silex_client silex_maya silex_nuke
+  // for more efficient when open DCC we decide to pass all rez packages in local 
+  // to open houdini we take 1m15s with rez packages on network and 15s with local packages 
+  // so some package need to be often update and we must check if le network version is the same as local versions.
+
+
 
   // Create a custom file protocol to bypass the file:// protection
   // See: https://www.electronjs.org/docs/latest/api/protocol#protocolregisterfileprotocolscheme-handler-completion
